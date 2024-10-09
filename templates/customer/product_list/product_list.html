@@ -1,0 +1,23 @@
+{% extends "customer/base.html" %}
+{% block content %}
+
+
+<div class="shop-area pt-95 pb-100">
+    <div class="container">
+        <div class="row flex-row-reverse">
+            <div class="col-lg-9">
+
+                <div class="shop-bottom-area mt-35">
+                    
+
+                    {% include 'customer/product_list/right/productList_right.html' %}
+
+                    {% include "customer/product_list/right/pagination.html" %}
+                </div>
+            </div>
+            {% include 'customer/product_list/left/productList_left.html' %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

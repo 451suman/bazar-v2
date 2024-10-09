@@ -1,0 +1,102 @@
+{% load static %}
+<div class="product-area pb-70">
+    <div class="container">
+        <div class="section-title text-center pb-40">
+            <h2>Some Category Products</h2>
+            <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical literature.</p>
+        </div>
+        <div class="product-tab-list nav pb-60 text-center">
+            {% for category in categories %}
+                <a class="{% if forloop.first %}active{% endif %}" href="#{{ category.slug }}" data-toggle="tab">
+                    <h4>{{ category.title }}</h4>
+                </a>
+            {% endfor %}
+        </div>
+        <div class="tab-content jump-2">
+            {% for category in categories %}
+                <div id="{{ category.slug }}" class="tab-pane {% if forloop.first %}active{% endif %}">
+                    <div class="ht-products product-slider-active owl-carousel">
+                        <!-- Product Start -->
+                        {% for product in category.product_set.all %}
+                            <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom mb-30">
+                                <div class="ht-product-inner">
+                                    <div class="ht-product-image-wrap">
+                                        <a href="{% url 'ecomapp:productdetail' product.pk %}" class="ht-product-image">
+                                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                                        </a>
+                                    </div>
+                                    <div class="ht-product-content">
+                                        <div class="ht-product-content-inner">
+                                            <h4 class="ht-product-title">
+                                                <a href="{% url 'ecomapp:productdetail' product.pk %}">{{ product.title|truncatechars:50 }}</a>
+                                            </h4>
+                                            <p class="text-danger">Category: {{ product.category.title }}</p>
+                                            <div class="ht-product-price">
+                                                <span class="new">Rs. {{ product.selling_price }}</span>
+                                                <span class="old">Rs. {{ product.marked_price }}</span>
+                                            </div>
+                                            <div class="ht-product-ratting-wrap">
+                                                <span class="ht-product-ratting">
+                                                    {% for star in "★★★★★" %}
+                                                        <i class="sli sli-star{% if forloop.counter > product.rating %}-empty{% endif %}"></i>
+                                                    {% endfor %}
+                                                </span>
+                                            </div>
+                                                <br>
+                                            <a href="{% url 'ecomapp:addtocart' product.id %}" class="btn btn-primary">Add to Cart </a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <!-- Product End -->
+                    </div>
+                    <!-- Swipe Indicators -->
+                    <div class="swiper-indicators">
+                        <span class="swiper-arrow left" onclick="$('.product-slider-active').trigger('prev.owl.carousel');">
+                            &#9664; <!-- Left arrow -->
+                        </span>
+                        <span class="swiper-arrow right" onclick="$('.product-slider-active').trigger('next.owl.carousel');">
+                            &#9654; <!-- Right arrow -->
+                        </span>
+                    </div>
+                    <div class="swipe-text">
+                        <p class="text-center">Swipe left or right to view more products</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Optional CSS for arrows -->
+<style>
+    .swiper-indicators {
+        position: relative;
+        text-align: center;
+        margin: 20px 0;
+    }
+    .swiper-arrow {
+        cursor: pointer;
+        font-size: 24px;
+        padding: 0 10px;
+        color: #c31c1c;
+    }
+    .swipe-text {
+        font-size: 14px;
+        color: #777;
+    }
+</style>
+
+<!-- Optional JavaScript for Owl Carousel -->
+<script>
+    $(document).ready(function(){
+        $('.product-slider-active').owlCarousel({
+            items: 1, // Number of items to display
+            loop: true,
+            nav: false, // Disable default nav
+            dots: true // Show dots for navigation
+        });
+    });
+</script>

@@ -1,0 +1,52 @@
+<div class="product-area pb-70"></div>
+    <div class="container">
+        <div class="section-title text-center pb-60">
+            <h2>Related products</h2>
+            <p> Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical</p>
+        </div>
+        <div class="tab-content jump">
+            <div id="shop-1" class="tab-pane active">
+                <div class="row ht-products">
+                    {% for product in extra_products %}
+                    <div class="col-xl-4 col-md-4 col-lg-4 col-sm-6">
+                        <!--Product Start-->
+                        <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom mb-30">
+                            <div class="ht-product-inner">
+                                <div class="ht-product-image-wrap">
+                                    <a href="{% url 'product-detail' product.pk %}" class="ht-product-image"> 
+                                        <img src="{{product.featured_image.url}}" alt="Universal Product Style" class="productlist-image-size"> 
+                                    </a>
+                                </div>
+                                <div class="ht-product-content">
+                                    <div class="ht-product-content-inner">
+                                        <h6 class="ht-product-title"><a href="{% url 'product-detail' product.pk %}">{{product.title|truncatechars:75}}</a></h6>
+                                        <p class="text-danger">Category: {{ product.category.name }}</p>
+                                        <p  class="text-danger" style="font-size:10px;">Tags: {{ product.tag.all|join:", "}}</p>
+                                        <div class="ht-product-price">
+                                            <span class="new">{{ product.price }}</span>
+                                        </div>
+                                        <div class="ht-product-ratting-wrap">
+                                            <span class="ht-product-ratting">
+                                                <i class="sli sli-star"></i>
+                                                <i class="sli sli-star"></i>
+                                                <i class="sli sli-star"></i>
+                                                <i class="sli sli-star"></i>
+                                                <i class="sli sli-star"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="ht-product-countdown-wrap">
+                                        <div class="ht-product-countdown" data-countdown="2020/01/01"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Product End-->
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

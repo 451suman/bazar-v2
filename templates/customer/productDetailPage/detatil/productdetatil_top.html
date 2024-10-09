@@ -1,0 +1,46 @@
+<div class="product-details-area pt-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product-details-img">
+                    <div class="zoompro-border zoompro-span">
+                        <img class="zoompro" src="{{ product.image.url }}"
+                            data-zoom-image="assets/img/product-details/product-detalis-bl1.jpg" alt="{{ product.title }}" />
+                        <div class="product-video">
+                            <!-- Video content can go here if needed -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product-details-content ml-30">
+                    <h2>{{ product.title }}</h2>
+                    <div class="product-details-price">
+                        <span>Rs. {{ product.selling_price }}</span> /
+                        <strike>Rs. {{ product.marked_price }}</strike>
+                    </div>
+                    <div class="pro-details-meta">
+                        <span>Categories: {{ product.category }}</span>
+                    </div>
+                    <div class="pro-details-rating-wrap">
+                        <div class="pro-details-rating">
+                            <span><a href="#">3 Reviews</a></span>
+                        </div>
+                        <div class="pro-details-rating">
+                            <i class="sli sli-star yellow"></i>
+                            <i class="sli sli-star yellow"></i>
+                            <i class="sli sli-star yellow"></i>
+                            <i class="sli sli-star yellow"></i>
+                            <i class="sli sli-star yellow"></i>
+                        </div>
+                        <span><a href="#">3 Views</a></span>
+                    </div>
+                    <div class="pro-details-quality">
+                        <button type="submit" class="btn btn-primary">Add To Cart Now</button>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="tab-content jump">
+    <div id="shop-1" class="tab-pane active">
+        <div class="row ht-products">
+            {% for product in products %}
+            <div class="col-xl-4 col-md-4 col-lg-4 col-sm-6">
+                <!--Product Start-->
+                <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom mb-30">
+                    <div class="ht-product-inner">
+                        <div class="ht-product-image-wrap">
+                            <a href="{% url 'ecomapp:productdetail' product.pk %}" class="ht-product-image"> 
+                                <img src="{{product.image.url}}" alt="Universal Product Style" class="productlist-image-size"> 
+                            </a>
+                        </div>
+                        <div class="ht-product-content">
+                            <div class="ht-product-content-inner">
+                                <h6 class="ht-product-title"><a href="{% url 'ecomapp:productdetail' product.pk %}">{{product.title|truncatechars:50}}</a></h6>
+                                <p class="text-danger">Category: {{ product.category.title }}</p>
+                                <p  class="text-danger" style="font-size:10px;">Tags: {{ product.tag.all|join:", "}}</p>
+                                <div class="ht-product-price">
+                                    <span class="new">Rs. {{ product.selling_price }}</span>
+                                    <span class="old">Rs. {{ product.marked_price }}</span>
+                                </div>
+                                <div class="ht-product-ratting-wrap">
+                                    <span class="ht-product-ratting">
+                                        <i class="sli sli-star"></i>
+                                        <i class="sli sli-star"></i>
+                                        <i class="sli sli-star"></i>
+                                        <i class="sli sli-star"></i>
+                                        <i class="sli sli-star"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <br>
+                            <a href="{% url 'ecomapp:addtocart' product.id %}" class="btn btn-primary">Add to Cart </a>
+
+                        </div>
+                    </div>
+                </div>
+                <!--Product End-->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

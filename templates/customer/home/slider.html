@@ -1,0 +1,30 @@
+{% load static %}
+<div class="slider-area section-padding-1">
+    <div class="slider-active-2 owl-carousel nav-style-2 dot-style-1">
+
+        {% for slider in sliders %}
+        <div class="single-slider slider-height-2 bg-aliceblue">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
+                        <div class="slider-content pt-180 slider-animated-1">
+                            <h1 class="animated">{{slider.title|truncatechars:50}}</h1>
+
+                            <div class="slider-btn btn-hover">
+                                <a class="animated" href="{% url 'ecomapp:productdetail' slider.pk %}">Shop Now <i class="sli sli-basket-loaded"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
+                        <div class="slider-single-img-2 slider-animated-1">
+                            <a class="animated" href="{% url 'ecomapp:productdetail' slider.pk %}">
+                            <img class="animated" src="{{slider.image.url}}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
