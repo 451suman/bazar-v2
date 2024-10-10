@@ -1,0 +1,49 @@
+{% extends "customer/base.html" %}
+
+
+{% block title %} Checkout {% endblock %}
+{% block content %}
+<div class="breadcrumb-area pt-35 pb-35 bg-gray">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <ul>
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="active">Checkout </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- compare main wrapper start -->
+<div class="checkout-main-area pt-70 pb-70">
+    <div class="container">
+
+
+        <a href="{% url 'ecomapp:mycart' %}" class="btn btn-primary">Update Cart</a>
+
+    </div>
+    <div class="checkout-wrap pt-30">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="billing-info-wrap mr-50">
+                    <h3>Billing Details</h3>
+                    <div class="row">
+                        <div class="row">
+                            {% include 'customer/checkout/left/checkoutform.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-5">
+                {% include 'customer/checkout/right/checkoutright.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+{% endblock content %}

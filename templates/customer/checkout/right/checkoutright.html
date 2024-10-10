@@ -1,0 +1,31 @@
+<div class="your-order-area">
+    <h3>Your order</h3>
+    <div class="your-order-wrap gray-bg-4">
+        <div class="your-order-info-wrap">
+            <div class="your-order-info">
+                <ul>
+                    <li>Product <span>Total</span></li>
+                </ul>
+            </div>
+            <div class="your-order-middle">
+                <ul>
+                    {% for cp in cart.cartproduct_set.all %}
+                    <li>{{cp.product.title}} X {{cp.quantity}} <span>{{cp.subtotal}} </span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- <div class="your-order-info order-shipping">
+                <ul>
+                    <li>Shipping <p>Enter your full address to see shipping <br>costs. </p>
+                    </li>
+                </ul>
+            </div> -->
+            <div class="your-order-info order-total">
+                <ul>
+                    <li>Total <span>{{cart.total}} </span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

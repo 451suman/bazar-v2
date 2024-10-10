@@ -90,28 +90,15 @@
                             </button>
                             <div class="setting-content">
                                 <ul>
-                                    <li>
-                                        <h4>Currency</h4>
-                                        <ul>
-                                            <li><a href="#">USD</a></li>
-                                            <li><a href="#">Euro</a></li>
-                                            <li><a href="#">Real</a></li>
-                                            <li><a href="#">BDT</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <h4>Language</h4>
-                                        <ul>
-                                            <li><a href="#">English (US)</a></li>
-                                            <li><a href="#">English (UK)</a></li>
-                                            <li><a href="#">Spanish</a></li>
-                                        </ul>
-                                    </li>
+                                    
                                     <li>
                                         <h4>Account</h4>
+                                        {% if request.user.is_authenticated %}
+                                        hrellpe
+                                        {% endif %}
                                         <ul>
                                             <li><a href="login-register.html">Login</a></li>
-                                            <li><a href="login-register.html">Creat Account</a></li>
+                                            <li><a href="{% url 'ecomapp:customerregistration' %}">Creat Account</a></li>
                                             <li><a href="my-account.html">My Account</a></li>
                                         </ul>
                                     </li>

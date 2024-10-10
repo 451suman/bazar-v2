@@ -1,0 +1,39 @@
+<form action="" method="POST" class="row g-3">
+    {% csrf_token %}
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label for="ordered_by">Order By: <abbr class="required" title="required">*</abbr></label>
+            <input type="text" name="ordered_by" id="ordered_by" class="form-control" 
+                value="{% if form.ordered_by.value %}{{ form.ordered_by.value }}{% endif %}" required>
+            {{ form.ordered_by.errors }}
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label for="mobile">Mobile: <abbr class="required" title="required">*</abbr></label>
+            <input type="tel" name="mobile" id="mobile" class="form-control" 
+                value="{% if form.mobile.value %}{{ form.mobile.value }}{% endif %}" required>
+            {{ form.mobile.errors }}
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label for="street_address">Street Address <abbr class="required" title="required">*</abbr></label>
+            <input type="text" name="shipping_address" id="street_address" class="form-control" 
+                placeholder="House number and street name" 
+                value="{% if form.shipping_address.value %}{{ form.shipping_address.value }}{% endif %}" required>
+            {{ form.shipping_address.errors }}
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label for="email">Email Address <abbr class="required" title="required">*</abbr></label>
+            <input type="email" name="email" id="email" class="form-control" 
+                value="{% if form.email.value %}{{ form.email.value }}{% endif %}" required>
+            {{ form.email.errors }}
+        </div>
+    </div>
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-danger">Place an Order</button>
+    </div>
+</form>
