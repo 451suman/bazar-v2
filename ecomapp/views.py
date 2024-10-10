@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.views.generic import *
 from django.contrib.auth import authenticate, login, logout
-from ecomapp.forms import CheckoutForm, CustomerRegistrationsForm
+from ecomapp.forms import CheckoutForm, CustomerLoginForm, CustomerRegistrationsForm
 from ecomapp.models import *
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -25,6 +25,28 @@ class CustomerRegisterView(CreateView):
         login(self.request, user)
         
         messages.success(self.request, "Registration successful")
+
+        return super().form_valid(form)
+
+class CustomerLogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect("ecomapp:home")
+
+class CustomerLoginView(FormView):
+    template_name = "customer/registration/login.html"
+    form_class = CustomerLoginForm
+    success_url = reverse_lazy("ecomapp:home")
+
+    # form_valid method is a type of post method and is available in createview formview and updateview
+    def form_valid(self, form):
+        uname = form.cleaned_data.get("username")
+        pword = form.cleaned_data["password"]
+        usr = authenticate(username=uname, password=pword)
+        if usr is not None and Customer.objects.filter(user=usr).exists():
+            login(self.request, usr)
+        else:
+            return render(self.request, self.template_name, {"form": self.form_class, "error": "Invalid credentials"})
 
         return super().form_valid(form)
 

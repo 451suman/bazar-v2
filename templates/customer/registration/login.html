@@ -1,0 +1,48 @@
+{% extends "customer/base.html" %}
+
+{% block title %} Login{% endblock %}
+{% block content %}
+
+
+<div class="login-register-area pt-100 pb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+                <div class="login-register-wrapper">
+                    <div class="login-register-tab-list nav">
+                        <a class="active" href="{% url 'ecomapp:login' %}">
+                            <h4>Login</h4>
+                        </a>
+                        <a href="{% url 'ecomapp:customerregistration' %}">
+                            <h4>Register</h4>
+                        </a>
+                    </div>
+
+                    <div class="login-form-container">
+                        <div class="login-register-form">
+
+                            {% if error %}
+                            <li style="color: red;">{{error}}</li>
+                            {% endif %}
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="username" placeholder="Username" required>
+                                {{form.username.errors}}
+                                <input type="password" name="password" placeholder="Enter a Password" required>
+                                {{form.password.errors}}
+                                <div class="button-box">
+                                    <button type="submit">Login</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

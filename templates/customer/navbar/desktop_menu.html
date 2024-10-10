@@ -18,11 +18,11 @@
                                 <li class="angle-shape"><a href="{% url 'ecomapp:home' %}">Home </a> </li>
                                 <li class="angle-shape"><a href="{% url 'ecomapp:products' %}">Products </a> </li>
                                 <li class="angle-shape"><a href="{% url 'ecomapp:mycart' %}">Cart </a> </li>
-                                   
-                               
+
+
                                 <li><a href="contact-us.html"> Contact </a></li>
-                               
-                                
+
+
                             </ul>
                         </nav>
                     </div>
@@ -90,21 +90,25 @@
                             </button>
                             <div class="setting-content">
                                 <ul>
-                                    
+
                                     <li>
                                         <h4>Account</h4>
-                                        {% if request.user.is_authenticated %}
-                                        hrellpe
-                                        {% endif %}
                                         <ul>
-                                            <li><a href="login-register.html">Login</a></li>
-                                            <li><a href="{% url 'ecomapp:customerregistration' %}">Creat Account</a></li>
+                                            {% if request.user.customer %}
+                                            Welcome {{request.user.username}}!
+                                            <li><a href="{% url 'ecomapp:customerlogout' %}">Logout</a></li>
+                                            
+                                            {% else %}
+                                            <li><a href="{% url 'ecomapp:login' %}">Login</a></li>
+                                            <li><a href="{% url 'ecomapp:customerregistration' %}">Creat Account</a>
+                                            </li>
                                             <li><a href="my-account.html">My Account</a></li>
+                                            {% endif %}
                                         </ul>
                                     </li>
                                 </ul>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>

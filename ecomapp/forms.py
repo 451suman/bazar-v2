@@ -40,3 +40,7 @@ class CheckoutForm(forms.ModelForm):
         if len(mob) != 10:
             raise forms.ValidationError("Mobile number must be exactly 10 digits.")
         return mob
+
+class CustomerLoginForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput())
+    password = forms.CharField(widget=forms.PasswordInput())
