@@ -5,9 +5,13 @@ from ecomapp.forms import CheckoutForm, CustomerLoginForm, CustomerRegistrations
 from ecomapp.models import *
 from django.urls import reverse_lazy
 from django.contrib import messages
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
+
+
+
+# -------------------Customer Login register--------------------------------------------------------------
 class CustomerRegisterView(CreateView):
     template_name = 'customer/registration/signup.html'
     form_class = CustomerRegistrationsForm
@@ -51,7 +55,24 @@ class CustomerLoginView(FormView):
         return super().form_valid(form)
 
 
-class HomeView(ListView):
+
+
+# -----------------------------------------------------------------------------------------------------------------------
+#  The dispatch method is overridden. This method is called when a request is made to a view. 
+# It processes the request before any specific view logic is executed.
+# just like static in java
+
+class EcomMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        cart_id = request.session.get("cart_id")
+        if cart_id:
+            cart_obj = Cart.objects.get(id=cart_id)
+            if request.user.is_authenticated and request.user.customer:
+                cart_obj.customer = request.user.customer
+                cart_obj.save()
+        return super().dispatch(request, *args, **kwargs)
+
+class HomeView(EcomMixin, ListView):
     model = Product
     template_name = "customer/home/home.html"
     context_object_name = "products"
@@ -66,7 +87,7 @@ class HomeView(ListView):
         return context
 
 
-class ProductListView(ListView):
+class ProductListView(EcomMixin, ListView):
     model = Product
     template_name = "customer/product_list/product_list.html"
     context_object_name = "products"
@@ -78,13 +99,15 @@ class ProductListView(ListView):
         return query
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(EcomMixin, DetailView):
     model = Product
     template_name = "customer/productDetailPage/product_detail_page.html"
     context_object_name = "product"
 
+    
 
-class AddToCartView(View):
+
+class AddToCartView(EcomMixin, View):
     def get(self, request, **kwargs):
         # Get product id from requested url
         product_id = self.kwargs["pro_id"]
@@ -137,8 +160,10 @@ class AddToCartView(View):
         return redirect("ecomapp:mycart")
 
 
-class MyCartView(TemplateView):
+class MyCartView(EcomMixin, TemplateView):
     template_name = "customer/cart/cart.html"
+
+   
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -151,9 +176,11 @@ class MyCartView(TemplateView):
             cart = None
         context["cart"] = cart
         return context
+    
 
 
-class ManageCartView(View):
+
+class ManageCartView(EcomMixin, View):
     def get(self, request, *args, **kwargs):
         print("this is manage cart section")
         cp_id = self.kwargs["cp_id"]
@@ -188,7 +215,7 @@ class ManageCartView(View):
         return redirect("ecomapp:mycart")
 
 
-class EmpytCartView(View):
+class EmpytCartView(EcomMixin, View):
     def get(self, request, *args, **kwargs):
         cart_id = request.session.get("cart_id", None)
         if cart_id:
@@ -199,12 +226,19 @@ class EmpytCartView(View):
             cart.save()
         return redirect("ecomapp:mycart")
 
-class CheckoutView(CreateView):
+class CheckoutView(EcomMixin, CreateView):
     model = Order  # Define the model here
     template_name = "customer/checkout/checkout.html"
     form_class = CheckoutForm
     success_url = reverse_lazy("ecomapp:home")
 
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.customer:
+            pass
+        else:
+            return redirect("/login/?next=/checkout/")
+        return super().dispatch(request, *args, **kwargs)
 
 
     def get_context_data(self, **kwargs):

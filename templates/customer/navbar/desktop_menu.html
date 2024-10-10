@@ -97,9 +97,10 @@
                                             {% if request.user.customer %}
                                             Welcome {{request.user.username}}!
                                             <li><a href="{% url 'ecomapp:customerlogout' %}">Logout</a></li>
+                                           
                                             
                                             {% else %}
-                                            <li><a href="{% url 'ecomapp:login' %}">Login</a></li>
+                                            <li><a href="{% url 'ecomapp:customerlogin' %}">Login</a></li>
                                             <li><a href="{% url 'ecomapp:customerregistration' %}">Creat Account</a>
                                             </li>
                                             <li><a href="my-account.html">My Account</a></li>
