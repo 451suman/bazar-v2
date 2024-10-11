@@ -16,7 +16,9 @@
                         <li class="menu-item-has-children"><a href="{% url 'ecomapp:home' %}">Home</a></li>
                         <li class="menu-item-has-children"><a href="{% url 'ecomapp:products' %}">Products</a></li>
                         <li class="menu-item-has-children"><a href="{% url 'ecomapp:mycart' %}">Cart </a></li>
-
+                        {% if request.user.customer %}
+                        <li class="menu-item-has-children"><a href="{% url 'ecomapp:customerprofile' %}">My Account </a></li>
+                        {% endif %}
 
 
 
@@ -32,21 +34,19 @@
 
 
             <div class="single-mobile-curr-lang">
-                <a class="mobile-account-active" href="#">My Account <i class="sli sli-arrow-down"></i></a>
-                <div class="lang-curr-dropdown account-dropdown-active">
+                
                     <ul>
                         {% if request.user.customer %}
                         Welcome {{request.user.username}}!
                         <li><a href="{% url 'logout' %}">Logout</a></li>
-
+                       
                         {% else %}
                         <li><a href="{% url 'login' %}">Login</a></li>
                         <li><a href="{% url 'ecomapp:customerregistration' %}">Creat Account</a>
                         </li>
-                        <li><a href="my-account.html">My Account</a></li>
                         {% endif %}
                     </ul>
-                </div>
+                
             </div>
         </div>
         <div class="mobile-social-wrap">

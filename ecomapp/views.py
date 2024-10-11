@@ -271,3 +271,38 @@ class CheckoutView(EcomMixin, CreateView):
             return redirect("ecomapp:home")
 
         return super().form_valid(form)
+    
+
+class CustomerProfileView(TemplateView):
+    template_name = "customer/my_account/myaccount.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated  and request.user.customer:
+            pass
+        else:
+            return redirect("ecomapp:customerlogin")
+
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        customer = self.request.user.customer
+        context["customer"] = customer
+
+        order = Order.objects.filter(cart__customer=customer).order_by("-id")
+        context["orders"] = order
+        return context
+
+class CustomerOrderDetailView(DetailView):
+    model = Order
+    template_name="customer/orderdetailView/customerorderdetail.html"
+    context_object_name = "ord_obj"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated  and request.user.customer:
+            pass
+        else:
+            return redirect("ecomapp:customerlogin")
+        return super().dispatch(request, *args, **kwargs)
+

@@ -1,0 +1,29 @@
+<div class="tab-pane fade" id="orders" role="tabpanel">
+    <div class="myaccount-content">
+        <h3>Orders</h3>    
+        <div class="myaccount-table table-responsive text-center">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>SN</th>
+                        <th>Order id</th>
+                        <th>Amount</th>
+                        <th>Ordered on </th>
+                        <th>Status</th>
+                    </tr>
+                </thead>    
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><a href="{%url 'ecomapp:customerorderdetail' order.id  %}">#ORDER_{{order.id}}</a></td>
+                            <td>{{order.total}}</td>
+                            <td>{{order.created_at|timesince}} ago</td>
+                            <td>{{order.order_status}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

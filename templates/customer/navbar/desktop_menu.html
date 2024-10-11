@@ -19,7 +19,10 @@
                                 <li class="angle-shape"><a href="{% url 'ecomapp:products' %}">Products </a> </li>
                                 <li class="angle-shape"><a href="{% url 'ecomapp:mycart' %}">Cart </a> </li>
 
+                                {% if request.user.is_authenticated and request.user.customer %}
 
+                                <li><a href="{% url 'ecomapp:customerprofile' %}"> My Account </a></li>
+                                {% endif %}
                                 <li><a href="contact-us.html"> Contact </a></li>
 
 
@@ -96,6 +99,7 @@
                                         <ul>
                                             {% if request.user.customer %}
                                             Welcome {{request.user.username}}!
+                                           
                                             <li><a href="{% url 'ecomapp:customerlogout' %}">Logout</a></li>
                                            
                                             
@@ -103,7 +107,6 @@
                                             <li><a href="{% url 'ecomapp:customerlogin' %}">Login</a></li>
                                             <li><a href="{% url 'ecomapp:customerregistration' %}">Creat Account</a>
                                             </li>
-                                            <li><a href="my-account.html">My Account</a></li>
                                             {% endif %}
                                         </ul>
                                     </li>
