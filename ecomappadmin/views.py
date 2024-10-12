@@ -4,8 +4,9 @@ from django.urls import reverse_lazy
 from django.views.generic import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from ecomapp.models import Admin, Order
+from ecomapp.models import Admin, Category, Customer, Order, Product
 from ecomappadmin.forms import AdminLoginForm
+from django.db.models import Sum
 
 
 # Create your views here.
@@ -22,8 +23,21 @@ class AdminRequiredMixin(object):
         return super().dispatch(request, *args, **kwargs)
 
 
+
+
 class AdminHomeView(AdminRequiredMixin, TemplateView):
     template_name = "admin/home/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["CustomerCount"] = Customer.objects.count()  # More efficient
+        context["totalincome"] = Order.objects.aggregate(total=Sum('total'))['total'] or 0
+        context["newcustomer"] = Customer.objects.all().order_by("-id") [:10]
+        context["totalProducts"] = Product.objects.all().count()
+        context["totalCategory"] = Category.objects.all().count()
+        context["totalorder"]= Order.objects.all().count()
+        return context
+
 
 
 
