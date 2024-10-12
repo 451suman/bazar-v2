@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ecomapp',
+    'ecomappadmin',
 ]
 
 MIDDLEWARE = [
@@ -135,7 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-LOGIN_REDIRECT_URL = "ecomapp:home"
+# LOGIN_REDIRECT_URL = "ecomapp:home"
 LOGOUT_REDIRECT_URL = "ecomapp:home"
 
 

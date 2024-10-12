@@ -1,0 +1,67 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+{% block title %}Admin Login{% endblock %}
+{% block content %}
+<div class="authentication-header"></div>
+<div class="section-authentication-signin d-flex align-items-center justify-content-center my-5 my-lg-0">
+    <div class="container-fluid">
+        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
+            <div class="col mx-auto">
+                <div class="mb-4 text-center">
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="p-4 rounded">
+                            <div class="text-center">
+                                <h3 class="">Sign in</h3>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="form-body">
+                            <form class="row g-3" method="post" action="">
+                                {% csrf_token %}
+                                <div class="col-12">
+                                    <label for="inputUsername" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputChoosePassword" class="form-label">Enter Password</label>
+                                    <div class="input-group" id="show_hide_password">
+                                        <input type="password" name="password" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password" required>
+                                        <a href="javascript:;" class="input-group-text bg-transparent" id="toggle-password"><i class='bx bx-hide'></i></a>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary"><i class="bx bxs-lock-open"></i>Sign in</button>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end row-->
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#toggle-password").on('click', function (event) {
+            event.preventDefault();
+            const passwordInput = $('#show_hide_password input');
+            const passwordIcon = $('#show_hide_password i');
+
+            if (passwordInput.attr("type") === "text") {
+                passwordInput.attr('type', 'password');
+                passwordIcon.addClass("bx-hide").removeClass("bx-show");
+            } else {
+                passwordInput.attr('type', 'text');
+                passwordIcon.removeClass("bx-hide").addClass("bx-show");
+            }
+        });
+    });
+</script>
+{% endblock content %}
