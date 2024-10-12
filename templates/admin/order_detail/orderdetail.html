@@ -1,0 +1,97 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}Order List{% endblock %}
+{% block content %}
+<!--start page wrapper -->
+<div class="page-wrapper">
+    <div class="page-content">
+        <!--breadcrumb-->
+        <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+            <div class="breadcrumb-title pe-3">eCommerce</div>
+            <div class="ps-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 p-0">
+                        <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Orders Details</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <!--end breadcrumb-->
+        <p><span>Order ID: </span> #ORDER_{{ord_obj.id}}</p>
+        <p><span>Order Status: </span> {{ord_obj.order_status}}</p>
+        <p><span>Order On: </span> {{ord_obj.created_at}} ({{ord_obj.created_at|timesince}}) ago</p>
+        <p><span>Customer information: </span> {{ord_obj.ordered_by}} </p>
+        <p><span>Customer Phone: </span> {{ord_obj.mobile}},</p>
+        <p><span>Shipping Address: </span> {{ord_obj.shipping_address}}</p>
+        <hr>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="d-lg-flex align-items-center mb-4 gap-3">
+
+
+                </div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>SN</th>
+                                <th>Item</th>
+                                <th>Rate</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cp in ord_obj.cart.cartproduct_set.all %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <a href="">
+                                            <div class="ms-2">
+                                                <h6 class="mb-0 font-14">{{cp.product.title}} {{cp.product.id}}</h6>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>{{cp.rate}}</td>
+
+                                <td>{{cp.quantity}}</td>
+                                <td>{{cp.subtotal|intcomma}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <th colspan="4" class="text-end"> Total: </th>
+                                <th>Rs. {{ord_obj.total|intcomma}}/-</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="mt-4">
+                        <form action="{% url 'ecomappadmin:admin-order-change-status' ord_obj.pk %}" method="post">
+                            {% csrf_token %}
+                            <label for="">Change Order Status</label>
+                            <select name="Staus" id="">
+                                {% for i, j in allstatus %}
+                                <option value="{{i}}" {% if i == ord_obj.order_status %} selected {% endif %}>{{j}}</option>
+                                {% endfor %}
+                            </select>
+                            <button class="btn btn-primary" type="submit">Change Order Status</button>    
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end pageasdasd wrapper -->
+<!--start overlay-->
+<div class="overlay toggle-icon"></div>
+<!--end overlay-->
+<!--end overlay-->
+{% endblock content %}

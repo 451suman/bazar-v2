@@ -10,6 +10,7 @@ urlpatterns = [
     path("admin-orders-completed/", AdminOrderCompletedView.as_view(), name="admin-orders-completed"),
     path("admin-orders-way/", AdminOrderWayView.as_view(), name="admin-orders-way"),
     path("admin-orders-canceled/", AdminOrderCanceledView.as_view(), name="admin-orders-canceled"),
-
+    path("admin-order-detail/<int:pk>/", AdminOrderDetailView.as_view(), name="admin-order-detail"),
+    path("admin-order-change-status-<int:pk>", AdminOrderStatusChangeView.as_view(), name="admin-order-change-status")
 ]
 

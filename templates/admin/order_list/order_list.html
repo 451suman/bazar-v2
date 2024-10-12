@@ -1,5 +1,6 @@
 {% extends "admin/adminbase.html" %}
 {% load static %}
+{% load humanize %}
 {% block title %}Order List{% endblock %}
 {% block content %}
 <!--start page wrapper -->
@@ -69,7 +70,11 @@
                                     <div class="d-flex align-items-center">
 
                                         <div class="ms-2">
-                                            <h6 class="mb-0 font-14">#ORDER_{{order.id}}</h6>
+                                            <h6 class="mb-0 font-14">
+                                                <a href="{% url 'ecomappadmin:admin-order-detail' order.id %}">
+                                                    #ORDER_{{order.id}}
+                                                </a>
+                                            </h6>
                                         </div>
                                     </div>
                                 </td>
@@ -94,72 +99,15 @@
                                     </div>
                                 </td>
                                 <td>{{ order.created_at }}</td>
-                                <td>Rs. {{ order.total }}</td>
-                                <td><button type="button" class="btn btn-primary btn-sm radius-30 px-4">View
-                                        Details</button></td>
+                                <td>Rs. {{ order.total|intcomma }}</td>
+                                <td><a href="{% url 'ecomappadmin:admin-order-detail' order.id %}" class="btn btn-primary btn-sm radius-30 px-4">View
+                                        Details</a></td>
 
                             </tr>
                             {% endfor %}
                             <!-- info  warning danger  -->
 
-                            <!-- <tr>
-										<td>
-											<div class="d-flex align-items-center">
-												<div>
-													<input class="form-check-input me-3" type="checkbox" value=""
-														aria-label="...">
-												</div>
-												<div class="ms-2">
-													<h6 class="mb-0 font-14">#OS-000986</h6>
-												</div>
-											</div>
-										</td>
-										<td>Gaspur Antunes</td>
-										<td>
-											<div
-												class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3">
-												<i class='bx bxs-circle align-middle me-1'></i>Confirmed</div>
-										</td>
-										<td>$650.30</td>
-										<td>June 12, 2020</td>
-										<td><button type="button" class="btn btn-primary btn-sm radius-30 px-4">View
-												Details</button></td>
-										<td>
-											<div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class='bx bxs-edit'></i></a>
-												<a href="javascript:;" class="ms-3"><i class='bx bxs-trash'></i></a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="d-flex align-items-center">
-												<div>
-													<input class="form-check-input me-3" type="checkbox" value=""
-														aria-label="...">
-												</div>
-												<div class="ms-2">
-													<h6 class="mb-0 font-14">#OS-000536</h6>
-												</div>
-											</div>
-										</td>
-										<td>Gaspur Antunes</td>
-										<td>
-											<div
-												class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3">
-												<i class='bx bxs-circle align-middle me-1'></i>Partially shipped</div>
-										</td>
-										<td>$159.45</td>
-										<td>June 14, 2020</td>
-										<td><button type="button" class="btn btn-primary btn-sm radius-30 px-4">View
-												Details</button></td>
-										<td>
-											<div class="d-flex order-actions">
-												<a href="javascript:;" class=""><i class='bx bxs-edit'></i></a>
-												<a href="javascript:;" class="ms-3"><i class='bx bxs-trash'></i></a>
-											</div>
-										</td>
-									</tr> -->
+                            
 
                         </tbody>
                     </table>

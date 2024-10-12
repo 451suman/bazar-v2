@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from ecomapp.models import Admin, Category, Customer, Order, Product
+from ecomapp.models import ORDER_STATUS, Admin, Category, Customer, Order, Product
 from ecomappadmin.forms import AdminLoginForm
 from django.db.models import Sum
 
@@ -119,8 +119,37 @@ class AdminOrderCanceledView(AdminRequiredMixin, ListView):
         query = query.filter(order_status="Order Canceled").order_by("-id")
         return query
 
-    #  ("Order Received", "Order Received"),
-    # ("Order Processing", "Order Processing"),
-    # ("On the way", "On the way"),
-    # ("Order Completed", "Order Completed"),
-    # ("Order Canceled", "Order Canceled"),
+
+class AdminOrderDetailView(AdminRequiredMixin, DetailView):
+    model = Order
+    template_name = "admin/order_detail/orderdetail.html"
+    context_object_name="ord_obj"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["allstatus"] = ORDER_STATUS  
+        # order status comes from model which is used in ordermodel
+        return context
+
+class AdminOrderStatusChangeView(AdminRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        order_id = self.kwargs['pk']
+        print("------------------------------------------------------------------------------------------")
+        print("------------------------------------------------------------------------------------------")
+        print("------------------------------------------------------------------------------------------")
+        print("------------------------------------------------------------------------------------------")
+        print("------------------------------------------------------------------------------------------")
+        print(order_id)
+
+
+        order_obj = Order.objects.get(pk=order_id)
+
+        newstatus = request.POST.get("Staus")
+
+        order_obj.order_status = newstatus
+
+        order_obj.save()
+        return redirect("ecomappadmin:admin-order-detail", pk = order_id)
+
+        
