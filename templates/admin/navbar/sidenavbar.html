@@ -39,12 +39,22 @@
             </ul>
         </li>
         <li>
-            <a href="user-profile.html">
+            <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class='bx bx-box'></i>
                 </div>
                 <div class="menu-title">Order</div>
             </a>
+            <ul>
+                <li><a href="{% url 'ecomappadmin:admin-orders-received' %}"><i class="bx bx-right-arrow-alt"></i>Order Received ({{ Received }})</a></li>
+                <li><a href="{% url 'ecomappadmin:admin-orders-processing' %}"><i class="bx bx-right-arrow-alt"></i>Order Processing ({{ Processing }})</a></li>
+                <li><a href="{% url 'ecomappadmin:admin-orders-way' %}"><i class="bx bx-right-arrow-alt"></i>On the Way ({{ way }})</a></li>
+                <li><a href="{% url 'ecomappadmin:admin-orders-completed' %}"><i class="bx bx-right-arrow-alt"></i>Order Completed ({{ Completed }})</a></li>
+                <li><a href="{% url 'ecomappadmin:admin-orders-canceled' %}"><i class="bx bx-right-arrow-alt"></i>Order Canceled ({{ Canceled }})</a></li>
+            </ul>
+            
+            
         </li>
+       
         <li>
             <a href="user-profile.html">
                 <div class="parent-icon"><i class='bx bx-user-pin'></i>
