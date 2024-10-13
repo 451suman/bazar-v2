@@ -38,6 +38,7 @@
                 <thead class="table-light">
                     <tr>
                         <th>SN</th>
+                        <th>Item Image</th>
                         <th>Item</th>
                         <th>Rate</th>
                         <th>Quantity</th>
@@ -48,6 +49,7 @@
                     {% for cp in ord_obj.cart.cartproduct_set.all %}
                     <tr>
                         <td>{{forloop.counter}}</td>
+                        <td><img src="{{cp.product.image.url}}" alt="" style="height: 100px; width: 100px;"></td>
                         <td>
                             <div class="d-flex align-items-center">
                                 <a href="">

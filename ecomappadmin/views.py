@@ -9,6 +9,7 @@ from ecomappadmin.forms import AddProductForm, AdminLoginForm
 from django.db.models import Sum
 
 
+
 # Create your views here.
 class AdminRequiredMixin(object):
     def dispatch(self, request, *args, **kwargs):
@@ -19,7 +20,6 @@ class AdminRequiredMixin(object):
             pass
         else:
             return redirect("ecomappadmin:admin-login")
-
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -147,7 +147,7 @@ class AdminOrderStatusChangeView(AdminRequiredMixin, View):
         order_obj.save()
         return redirect("ecomappadmin:admin-order-detail", pk = order_id)
 
-from django.urls import reverse
+
 
 class ProductAddView(AdminRequiredMixin, CreateView):
     model = Product
@@ -157,6 +157,32 @@ class ProductAddView(AdminRequiredMixin, CreateView):
 
     def form_valid(self, form):
         messages.success(self.request, "Product added successfully!")
-        return super().form_valid(form) 
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Add New Product"
+        return context
+
 
     
+class ProductListView(AdminRequiredMixin, ListView):
+    model = Product
+    template_name = "admin/productlist/productlist.html"
+    context_object_name = "products"
+    paginate_by = 15
+
+    def get_queryset(self):
+        query = super().get_queryset()
+        return query.order_by("-id")
+
+
+class ProductDetailView(AdminRequiredMixin, DetailView):
+    model = Product
+    template_name = "admin/productdetailpage/productdetailpage.html"
+    context_object_name = "product"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Product"
+        return context

@@ -1,0 +1,64 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}Product List{% endblock %}
+{% block content %}
+<!--start page wrapper -->
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-xl-2">
+                        <a href="{% url 'ecomappadmin:add-product' %}" class="btn btn-primary mb-3 mb-lg-0"><i
+                                class='bx bxs-plus-square'></i>New Product</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 product-grid">
+    {% for product in products %}
+    <div class="col">
+        <div class="card">
+            <a href="{% url 'ecomappadmin:admin-product-detail' product.slug %}">
+                <img src="{{product.image.url}}" height="250px" class="card-img-top" alt="...">
+            </a>
+            <div class="card-body">
+                <a href="{% url 'ecomappadmin:admin-product-detail' product.slug %}">
+                    <h6 class="card-title cursor-pointer">{{product.title|truncatechars:40}}</h6>
+                </a>
+                <h6 class="card-title cursor-pointer" style="font-size:12px;">Category: {{product.category}}</h6>
+                <div class="clearfix">
+                    <!-- <p class="mb-0 float-start"><strong>134</strong> Sales</p> -->
+                    <p class="mb-0 float-end fw-bold">
+                        <span class="me-2 text-decoration-line-through text-danger">Rs. {{product.marked_price}}</span>
+                        <span>Rs. {{product.selling_price}}</span>
+                    </p>
+                </div>
+                <!-- <div class="d-flex align-items-center mt-3 fs-6">
+                    <div class="cursor-pointer">
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-secondary'></i>
+                    </div>
+                    <p class="mb-0 ms-auto">4.2(182)</p>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+<!--end page wrapper -->
+<!--start overlay-->
+<div class="overlay toggle-icon"></div>
+<!--end overlay-->
+{% endblock content %}

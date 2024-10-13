@@ -99,10 +99,10 @@ class ProductListView(EcomMixin, ListView):
         return query
 
 
-class idProductDetailView(EcomMixin, DetailView):
-    model = Product
-    template_name = "customer/productDetailPage/product_detail_page.html"
-    context_object_name = "product"
+# class idProductDetailView(EcomMixin, DetailView):
+#     model = Product
+#     template_name = "customer/productDetailPage/product_detail_page.html"
+#     context_object_name = "product"
 
 class ProductDetailView(EcomMixin, TemplateView):
     template_name = "customer/productDetailPage/product_detail_page.html"
@@ -239,8 +239,6 @@ class CheckoutView(EcomMixin, CreateView):
     model = Order  # Define the model here
     template_name = "customer/checkout/checkout.html"
     form_class = CheckoutForm
-    success_url = reverse_lazy("ecomapp:home")
-
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated and request.user.customer:
@@ -271,11 +269,12 @@ class CheckoutView(EcomMixin, CreateView):
             form.instance.discount = 0
             form.instance.total = cart_obj.total
             form.instance.order_status = "Order Received"
-
+            order = form.save()
             # now delete cart_id which is store in Session
             del self.request.session["cart_id"]
 
             messages.success(self.request, "Order has been received")
+            return redirect("ecomapp:customerorderdetail", pk=order.pk)
         else:
             return redirect("ecomapp:home")
 

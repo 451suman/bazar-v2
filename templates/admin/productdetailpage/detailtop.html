@@ -1,0 +1,43 @@
+<div class="row g-0">
+    <div class="col-md-4 border-end">
+        <img src="{{product.image.url}}" class="img-fluid" alt="...">
+        <div class="row mb-3 row-cols-auto g-2 justify-content-center mt-3">
+            <div class="col"><img src="assets/images/products/12.png" width="70" class="border rounded cursor-pointer"
+                    alt=""></div>
+            <div class="col"><img src="assets/images/products/11.png" width="70" class="border rounded cursor-pointer"
+                    alt=""></div>
+            <div class="col"><img src="assets/images/products/14.png" width="70" class="border rounded cursor-pointer"
+                    alt=""></div>
+            <div class="col"><img src="assets/images/products/15.png" width="70" class="border rounded cursor-pointer"
+                    alt=""></div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card-body">
+            <h4 class="card-title">{{product.title}}</h4>
+            <div class="d-flex gap-3 py-3">
+                <div class="cursor-pointer">
+                    <i class='bx bxs-star text-warning'></i>
+                    <i class='bx bxs-star text-warning'></i>
+                    <i class='bx bxs-star text-warning'></i>
+                    <i class='bx bxs-star text-warning'></i>
+                    <i class='bx bxs-star text-secondary'></i>
+                </div>
+                <div>142 reviews</div>
+                <div class="text-success"><i class='bx bxs-cart-alt align-middle'></i> 134 orders</div>
+            </div>
+
+            <dl class="row">
+                <dt class="col-sm-3">Category:</dt>
+                <dd class="col-sm-9">{{product.category.title}}</dd>
+            </dl>
+            <div class="mb-3">
+                <span class="me-2 text-decoration-line-through text-danger h4">Rs. {{product.marked_price}}</span>
+                &nbsp;
+                <span class="price h4">Rs.{{product.selling_price}}</span>
+                <span class="text-muted">/per piece</span>
+            </div>
+        </div>
+       
+    </div>
+</div>

@@ -1,5 +1,5 @@
 {% extends "admin/adminbase.html" %}
-{% block title %}Product{% endblock %}
+{% block title %}{{title}} page{% endblock %}
 
 {% load static %}
 {% load crispy_forms_tags %}
@@ -9,7 +9,7 @@
 
         <div class="card">
             <div class="card-body p-4">
-                <h5 class="card-title">Add New Product</h5>
+                <h5 class="card-title">{{title}}</h5>
                 <hr>
                 {% if form.errors %}
                 <div class="alert alert-danger">

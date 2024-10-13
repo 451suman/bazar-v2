@@ -5,7 +5,7 @@ app_name = "ecomapp"
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
     path("products/", ProductListView.as_view(), name="products"),
-    path("product/<int:pk>/", idProductDetailView.as_view(), name="productdetail"),
+    # path("product/<int:pk>/", idProductDetailView.as_view(), name="productdetail"),
     path("product/<slug:slug>/", ProductDetailView.as_view(), name="productdetail"),
 
     path("my-cart/", MyCartView.as_view(), name="mycart"),
