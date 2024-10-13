@@ -1,0 +1,130 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+
+{% block title %}{{ title }} page{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        {% for c in categories %}
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal{{ c.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete this item? {{ c.title }} {{c.pk}}</p>
+                        <form action="{% url 'ecomappadmin:admin-delete-category' c.pk %}" method="get" class="d-inline">
+                            {% csrf_token %}
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger" aria-label="Delete" title="Delete">Delete</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 mb-3">
+            <div class="btn btn-outline-primary w-100 btn-custom">
+                <span class="category-title">{{ c.title }}</span>
+                <div class="action-icons">
+                    <a href="{% url 'ecomappadmin:admin-update-category' c.pk %}">
+                        <i class='bx bx-edit' aria-label="Edit" title="Edit"></i>
+                    </a>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn-icon" data-bs-toggle="modal" data-bs-target="#deleteModal{{ c.pk }}">
+                        <i class='bx bx-trash'></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .btn-custom {
+        padding: 12px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 2px solid #6200ea;
+        background-color: #f9f9f9;
+    }
+
+    .category-title {
+        font-weight: bold;
+        color: #333;
+        flex-grow: 1;
+    }
+
+    .action-icons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-custom i {
+        cursor: pointer;
+        font-size: 18px;
+        color: #6200ea;
+        transition: color 0.2s ease;
+    }
+
+    .btn-icon {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-icon:hover {
+        background-color: #e1bee7;
+        border-radius: 5px;
+    }
+
+    .btn-custom:hover {
+        background-color: #d1c4e9;
+    }
+
+    /* Modal Styling */
+    .modal-header {
+        background-color: #6200ea;
+        color: #fff;
+    }
+
+    .modal-footer button {
+        background-color: #6200ea;
+        color: #fff;
+    }
+
+    .modal-footer button.btn-secondary {
+        background-color: #333;
+    }
+
+    .btn-outline-primary:hover {
+        color: #fff;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .btn-custom {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .btn-custom div {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+    }
+</style>
+{% endblock content %}

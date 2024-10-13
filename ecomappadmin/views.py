@@ -1,11 +1,12 @@
 from urllib import request
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from ecomapp.models import ORDER_STATUS, Admin, Category, Customer, Order, Product
-from ecomappadmin.forms import AddProductForm, AdminLoginForm
+from ecomappadmin.forms import AddProductForm, AdminLoginForm, CategoryForm
 from django.db.models import Sum
 
 
@@ -154,9 +155,9 @@ class AdminOrderStatusChangeView(AdminRequiredMixin, View):
 
 class ProductAddView(AdminRequiredMixin, CreateView):
     model = Product
-    template_name = "admin/product_crud/addproduct.html"
+    template_name = "admin/product_category_crud/addproductcategory.html"
     form_class = AddProductForm
-    success_url = reverse_lazy("ecomappadmin:add-product")
+    # success_url = reverse_lazy("ecomappadmin:admin-product-detail", )
 
     def form_valid(self, form):
         messages.success(self.request, "Product added successfully!")
@@ -166,6 +167,9 @@ class ProductAddView(AdminRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Add New Product"
         return context
+    def get_success_url(self):
+        return reverse('ecomappadmin:admin-product-detail', kwargs={"slug": self.object.slug})
+    
 
 
     
@@ -191,13 +195,11 @@ class ProductDetailView(AdminRequiredMixin, DetailView):
         return context
 
 
-from django.urls import reverse
-from django.contrib import messages
-from django.views.generic import UpdateView
+
 
 class ProductEditView(AdminRequiredMixin, UpdateView):
     model = Product
-    template_name = "admin/product_crud/addproduct.html"
+    template_name = "admin/product_category_crud/addproductcategory.html"
     form_class = AddProductForm
 
     def get_context_data(self):
@@ -217,4 +219,54 @@ class ProductDeleteView(AdminRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('ecomappadmin:product-list')  # Ensure this is the correct URL name
 
+
+
+
+class ADDCategoryView(AdminRequiredMixin, CreateView):
+    model = Category
+    template_name = 'admin/product_category_crud/addproductcategory.html'
+    form_class = CategoryForm
+    success_url = reverse_lazy('ecomappadmin:admin-category-list')  # Ensure this is the correct URL name
+
+    def form_valid(self, form):
+        messages.success(self.request, "Category added successfully")
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):  # Accept **kwargs to maintain context
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Add New Category"
+        return context
+
+class CategoryListView(AdminRequiredMixin, ListView):
+    model = Category
+    template_name = "admin/category_list_page/category_list.html"
+    context_object_name="categories"
+
+    def get_queryset(self):
+        query = super().get_queryset()
+        query.order_by("-id")
+        return query
+
+
+class CategoryUpdateView(AdminRequiredMixin, UpdateView):
+    model = Category
+    template_name = 'admin/product_category_crud/addproductcategory.html'
+    form_class = CategoryForm
+    success_url = reverse_lazy('ecomappadmin:admin-category-list')  # Ensure this is the correct URL name
+
+    def form_valid(self, form):
+        messages.success(self.request, "Category Updated successfully")
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):  # Accept **kwargs to maintain context
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Update Category"
+        return context
     
+class CategoryDeleteView(AdminRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        cid = kwargs.get("pk")
+        category = Category.objects.get(pk=cid)
+        category.delete()   
+        messages.success(request, "Category deleted successfully")
+        return redirect("ecomappadmin:admin-category-list")
