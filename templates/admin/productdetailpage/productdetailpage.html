@@ -3,8 +3,54 @@
 {% load humanize %}
 {% block title %}{{title}} Page{% endblock %}
 {% block content %}
-<!--start page wrapper -->
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete {{product.title}}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <u><strong>{{product.title}}</strong></u> product?</p>
+                <form action="{% url 'ecomappadmin:admin-product-delete' product.pk %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--start page wrapper -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-xl-2">
+                        <a href="{% url 'ecomappadmin:admin-product-edit' product.slug %}"
+                            class="btn btn-primary mb-3 mb-lg-0"><i class='bx bxs-plus-square'></i>Edit Product</a>
+                    </div>
+                    <div class="col-lg-3 col-xl-2">
+
+
+
+                        <button type="button" class="btn btn-danger mb-3 mb-lg-0" class="btn btn-primary"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <i class='bx bxs-plus-square'></i> Delete Product
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!--breadcrumb-->
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
     <div class="breadcrumb-title pe-3">{{title}} Page</div>

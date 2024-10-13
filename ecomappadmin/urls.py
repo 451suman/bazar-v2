@@ -5,6 +5,7 @@ app_name = "ecomappadmin"
 urlpatterns = [
     path("admin-home/", AdminHomeView.as_view(), name="admin-home"),
     path("admin-login/", AdminLoginView.as_view(), name="admin-login"),
+    path("admin-logout/", AdminLogouturl.as_view(), name="admin-logout"),
     path("admin-orders-received/", AdminOrderReceivedView.as_view(), name="admin-orders-received"),
     path("admin-orders-processing/", AdminOrderProcessingView.as_view(), name="admin-orders-processing"),
     path("admin-orders-completed/", AdminOrderCompletedView.as_view(), name="admin-orders-completed"),
@@ -14,6 +15,9 @@ urlpatterns = [
     path("admin-order-change-status-<int:pk>", AdminOrderStatusChangeView.as_view(), name="admin-order-change-status"),
     path("add-product/", ProductAddView.as_view(), name="add-product"),
     path("product-list", ProductListView.as_view(), name="product-list"),
-    path("product-detail/<slug:slug>/", ProductDetailView.as_view(), name="admin-product-detail")
+    path("product-detail/<slug:slug>/", ProductDetailView.as_view(), name="admin-product-detail"),
+    path("product-edit/<slug:slug>/", ProductEditView.as_view(), name="admin-product-edit"),
+    
+    path("product-delete/<int:pk>/", ProductDeleteView.as_view(), name="admin-product-delete"),
 ]
 

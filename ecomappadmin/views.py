@@ -1,6 +1,6 @@
 from urllib import request
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -63,7 +63,10 @@ class AdminLoginView(FormView):
             )
         return super().form_valid(form)
 
-
+class AdminLogouturl(View):
+    def get(self, request):
+        logout(request)
+        return redirect("ecomapp:home")
 # --------------------------orders ---------------------------------
 class AdminOrderReceivedView(AdminRequiredMixin, ListView):
     model = Order
@@ -186,3 +189,32 @@ class ProductDetailView(AdminRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Product"
         return context
+
+
+from django.urls import reverse
+from django.contrib import messages
+from django.views.generic import UpdateView
+
+class ProductEditView(AdminRequiredMixin, UpdateView):
+    model = Product
+    template_name = "admin/product_crud/addproduct.html"
+    form_class = AddProductForm
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["title"] = "Update Product Details"
+        return context
+
+    def form_valid(self, form):
+        product = form.save()  # Save the form and get the product instance
+        messages.success(self.request, "Product updated successfully!")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('ecomappadmin:admin-product-detail', kwargs={"slug": self.object.slug})
+    
+class ProductDeleteView(AdminRequiredMixin, DeleteView):
+    model = Product
+    success_url = reverse_lazy('ecomappadmin:product-list')  # Ensure this is the correct URL name
+
+    
