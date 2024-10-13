@@ -11,13 +11,13 @@
                             <h1 class="animated">{{slider.title|truncatechars:50}}</h1>
 
                             <div class="slider-btn btn-hover">
-                                <a class="animated" href="{% url 'ecomapp:productdetail' slider.pk %}">Shop Now <i class="sli sli-basket-loaded"></i></a>
+                                <a class="animated" href="{% url 'ecomapp:productdetail' slider.slug %}">Shop Now <i class="sli sli-basket-loaded"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
                         <div class="slider-single-img-2 slider-animated-1">
-                            <a class="animated" href="{% url 'ecomapp:productdetail' slider.pk %}">
+                            <a class="animated" href="{% url 'ecomapp:productdetail' slider.slug %}">
                             <img class="animated" src="{{slider.image.url}}" alt="">
                             </a>
                         </div>

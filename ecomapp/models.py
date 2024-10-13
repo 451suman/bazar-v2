@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from autoslug import AutoSlugField
 # Create your models here.
 class Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) 
@@ -22,14 +22,13 @@ class Customer(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
-
+    slug = AutoSlugField(populate_from='title', unique=True)
     def __str__(self):
         return self.title
     
 class Product (models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    slug = AutoSlugField(populate_from='title', unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="products")
     marked_price = models.PositiveIntegerField()

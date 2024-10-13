@@ -21,14 +21,14 @@
                             <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom mb-30">
                                 <div class="ht-product-inner">
                                     <div class="ht-product-image-wrap">
-                                        <a href="{% url 'ecomapp:productdetail' product.pk %}" class="ht-product-image">
+                                        <a href="{% url 'ecomapp:productdetail' product.slug %}" class="ht-product-image">
                                             <img src="{{ product.image.url }}" alt="{{ product.title }}">
                                         </a>
                                     </div>
                                     <div class="ht-product-content">
                                         <div class="ht-product-content-inner">
                                             <h4 class="ht-product-title">
-                                                <a href="{% url 'ecomapp:productdetail' product.pk %}">{{ product.title|truncatechars:50 }}</a>
+                                                <a href="{% url 'ecomapp:productdetail' product.slug %}">{{ product.title|truncatechars:50 }}</a>
                                             </h4>
                                             <p class="text-danger">Category: {{ product.category.title }}</p>
                                             <div class="ht-product-price">

@@ -91,7 +91,7 @@ class ProductListView(EcomMixin, ListView):
     model = Product
     template_name = "customer/product_list/product_list.html"
     context_object_name = "products"
-    paginate_by = 3
+    paginate_by = 9
 
     def get_queryset(self):
         query = super().get_queryset()
@@ -99,12 +99,21 @@ class ProductListView(EcomMixin, ListView):
         return query
 
 
-class ProductDetailView(EcomMixin, DetailView):
+class idProductDetailView(EcomMixin, DetailView):
     model = Product
     template_name = "customer/productDetailPage/product_detail_page.html"
     context_object_name = "product"
 
-    
+class ProductDetailView(EcomMixin, TemplateView):
+    template_name = "customer/productDetailPage/product_detail_page.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs["slug"]
+        print(slug)
+        context["product"] = Product.objects.get(slug=slug)
+        return context
+
 
 
 class AddToCartView(EcomMixin, View):

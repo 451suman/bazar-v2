@@ -9,7 +9,7 @@
         </div>
         <div>
             <a href="{% url 'ecomappadmin:admin-home' %}">
-                <h4 class="logo-text">BAZAR</h4>
+                <h4 class="logo-text">BAZAR ADMIN SITE</h4>
             </a>
         </div>
         <div class="toggle-icon ms-auto"><i class='bx bx-first-page'></i>
@@ -32,9 +32,9 @@
                 <div class="menu-title">eCommerce</div>
             </a>
             <ul>
-                <li> <a href="ecommerce-products.html"><i class="bx bx-right-arrow-alt"></i>Products</a>  </li>
-                <li> <a href="ecommerce-products-details.html"><i class="bx bx-right-arrow-alt"></i>Product Details</a>  </li>
-                <li> <a href="ecommerce-add-new-products.html"><i class="bx bx-right-arrow-alt"></i>Add New Products</a>  </li>
+                <li> <a class="text-body" href="ecommerce-products.html"><i class="bx bx-right-arrow-alt"></i>Products</a>  </li>
+                <li> <a class="text-body" href="ecommerce-products-details.html"><i class="bx bx-right-arrow-alt"></i>Product Details</a>  </li>
+                <li> <a class="text-body" href="{% url 'ecomappadmin:add-product' %}"><i class="bx bx-right-arrow-alt"></i>Add New Products</a>  </li>
                 
             </ul>
         </li>
@@ -45,11 +45,11 @@
                 <div class="menu-title">Order</div>
             </a>
             <ul>
-                <li><a class="bg-warning" href="{% url 'ecomappadmin:admin-orders-received' %}"><i class="bx bx-right-arrow-alt"></i>Order Received ({{ Received }})</a></li>
-                <li><a class="bg-info" href="{% url 'ecomappadmin:admin-orders-processing' %}"><i class="bx bx-right-arrow-alt"></i>Order Processing ({{ Processing }})</a></li>
-                <li><a class="bg-info" href="{% url 'ecomappadmin:admin-orders-way' %}"><i class="bx bx-right-arrow-alt"></i>On the Way ({{ way }})</a></li>
-                <li><a class="bg-success" href="{% url 'ecomappadmin:admin-orders-completed' %}"><i class="bx bx-right-arrow-alt"></i>Order Completed ({{ Completed }})</a></li>
-                <li><a class="bg-danger" href="{% url 'ecomappadmin:admin-orders-canceled' %}"><i class="bx bx-right-arrow-alt"></i>Order Canceled ({{ Canceled }})</a></li>
+                <li><a class="text-body bg-warning" href="{% url 'ecomappadmin:admin-orders-received' %}"><i class="bx bx-right-arrow-alt"></i>Order Received ({{ Received }})</a></li>
+                <li><a class="text-body bg-info" href="{% url 'ecomappadmin:admin-orders-processing' %}"><i class="bx bx-right-arrow-alt"></i>Order Processing ({{ Processing }})</a></li>
+                <li><a class="text-body bg-info" href="{% url 'ecomappadmin:admin-orders-way' %}"><i class="bx bx-right-arrow-alt"></i>On the Way ({{ way }})</a></li>
+                <li><a class="text-body bg-success" href="{% url 'ecomappadmin:admin-orders-completed' %}"><i class="bx bx-right-arrow-alt"></i>Order Completed ({{ Completed }})</a></li>
+                <li><a class="text-body bg-danger" href="{% url 'ecomappadmin:admin-orders-canceled' %}"><i class="bx bx-right-arrow-alt"></i>Order Canceled ({{ Canceled }})</a></li>
             </ul>
             
             

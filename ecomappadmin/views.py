@@ -5,7 +5,7 @@ from django.views.generic import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from ecomapp.models import ORDER_STATUS, Admin, Category, Customer, Order, Product
-from ecomappadmin.forms import AdminLoginForm
+from ecomappadmin.forms import AddProductForm, AdminLoginForm
 from django.db.models import Sum
 
 
@@ -135,21 +135,28 @@ class AdminOrderStatusChangeView(AdminRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         order_id = self.kwargs['pk']
-        print("------------------------------------------------------------------------------------------")
-        print("------------------------------------------------------------------------------------------")
-        print("------------------------------------------------------------------------------------------")
-        print("------------------------------------------------------------------------------------------")
-        print("------------------------------------------------------------------------------------------")
-        print(order_id)
-
-
+        # print("------------------------------------------------------------------------------------------")
+        # print("------------------------------------------------------------------------------------------")
+        # print("------------------------------------------------------------------------------------------")
+        # print("------------------------------------------------------------------------------------------")
+        # print("------------------------------------------------------------------------------------------")
+        # print(order_id)
         order_obj = Order.objects.get(pk=order_id)
-
         newstatus = request.POST.get("Staus")
-
         order_obj.order_status = newstatus
-
         order_obj.save()
         return redirect("ecomappadmin:admin-order-detail", pk = order_id)
 
-        
+from django.urls import reverse
+
+class ProductAddView(AdminRequiredMixin, CreateView):
+    model = Product
+    template_name = "admin/product_crud/addproduct.html"
+    form_class = AddProductForm
+    success_url = reverse_lazy("ecomappadmin:add-product")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Product added successfully!")
+        return super().form_valid(form) 
+
+    

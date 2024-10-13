@@ -13,17 +13,37 @@
                 <!-- mobile menu navigation start -->
                 <nav>
                     <ul class="mobile-menu">
-                        <li class="menu-item-has-children"><a href="{% url 'ecomapp:home' %}">Home</a></li>
-                        <li class="menu-item-has-children"><a href="{% url 'ecomapp:products' %}">Products</a></li>
-                        <li class="menu-item-has-children"><a href="{% url 'ecomapp:mycart' %}">Cart </a></li>
+                        <li class="menu-item-has-children">
+                            <a href="{% url 'ecomapp:home' %}" class="{% if request.path == '/' %}navbaractive {% endif %}">
+                                Home
+                            </a>
+                        </li>
+                        <li class="menu-item-has-children">
+                            <a href="{% url 'ecomapp:products' %}" class="{% if request.path == '/products/' %}navbaractive {% endif %}">
+                                Products
+                            </a>
+                        </li>
+                        <li class="menu-item-has-children">
+                            <a href="{% url 'ecomapp:mycart' %}" class="{% if request.path == '/my-cart/' %}navbaractive {% endif %}">
+                                Cart
+                            </a>
+                        </li>
                         {% if request.user.customer %}
-                        <li class="menu-item-has-children"><a href="{% url 'ecomapp:customerprofile' %}">My Account </a></li>
+                        <li class="menu-item-has-children">
+                            <a href="{% url 'ecomapp:customerprofile' %}">
+                                My Account
+                            </a>
+                        </li>
                         {% endif %}
 
 
 
 
-                        <li><a href="contact-us.html">Contact us</a></li>
+
+                        <li><a href="contact-us.html">Contact us
+
+
+                            </a></li>
                     </ul>
                 </nav>
                 <!-- mobile menu navigation end -->
@@ -34,19 +54,25 @@
 
 
             <div class="single-mobile-curr-lang">
-                
-                    <ul>
-                        {% if request.user.customer %}
-                        Welcome {{request.user.username}}!
-                        <li><a href="{% url 'logout' %}">Logout</a></li>
-                       
-                        {% else %}
-                        <li><a href="{% url 'login' %}">Login</a></li>
-                        <li><a href="{% url 'ecomapp:customerregistration' %}">Creat Account</a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                
+
+                <ul>
+                    {% if request.user.customer %}
+                    Welcome {{request.user.username}}!
+                    <li><a href="{% url 'logout' %}">Logout
+
+
+                        </a></li>
+
+                    {% else %}
+                    <li><a href="{% url 'login' %}">Login
+
+
+                        </a></li>
+                    <li><a href="{% url 'ecomapp:customerregistration' %}">Creat Account</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
             </div>
         </div>
         <div class="mobile-social-wrap">
