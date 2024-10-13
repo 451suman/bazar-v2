@@ -61,7 +61,7 @@
                     <li><a class="text-body bg-info" href="{% url 'ecomappadmin:admin-orders-processing' %}"><i class="bx bx-right-arrow-alt"></i>Order Processing ({{ Processing }})</a></li>
                     <li><a class="text-body bg-info" href="{% url 'ecomappadmin:admin-orders-way' %}"><i class="bx bx-right-arrow-alt"></i>On the Way ({{ way }})</a></li>
                     <li><a class="text-body bg-success" href="{% url 'ecomappadmin:admin-orders-completed' %}"><i class="bx bx-right-arrow-alt"></i>Order Completed ({{ Completed }})</a></li>
-                    <li><a class="" href="{% url 'ecomappadmin:admin-orders-canceled' %}"><i class="bx bx-right-arrow-alt"></i>Order Canceled ({{ Canceled }})</a></li>
+                    <li><a class="text-body bg-danger" href="{% url 'ecomappadmin:admin-orders-canceled' %}"><i class="bx bx-right-arrow-alt"></i>Order Canceled ({{ Canceled }})</a></li>
                     {% else %}
                     <li><a class="" href="{% url 'ecomappadmin:admin-login' %}"><i class="bx bx-right-arrow-alt"></i>Go to Login Page</a></li>
 

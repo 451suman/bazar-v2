@@ -31,8 +31,6 @@ class AdminHomeView(AdminRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["CustomerCount"] = Customer.objects.count()  # More efficient
-        context["totalincome"] = Order.objects.aggregate(total=Sum('total'))['total'] or 0
         context["newcustomer"] = Customer.objects.all().order_by("-id") [:10]
         context["totalProducts"] = Product.objects.all().count()
         context["totalCategory"] = Category.objects.all().count()
@@ -72,56 +70,60 @@ class AdminLogouturl(View):
 class AdminOrderReceivedView(AdminRequiredMixin, ListView):
     model = Order
     template_name = "admin/order_list/order_list.html"
-    context_object_name = "allorders"
 
-    def get_queryset(self):
-        query = super().get_queryset()
-        query = query.filter(order_status="Order Received").order_by("-id")
-        return query
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Received"
+        context["allorders"] = Order.objects.filter(order_status="Order Received").order_by("-id")
+        return context
+
 
 
 class AdminOrderProcessingView(AdminRequiredMixin, ListView):
     model = Order
     template_name = "admin/order_list/order_list.html"
-    context_object_name = "allorders"
 
-    def get_queryset(self):
-        query = super().get_queryset()
-        query = query.filter(order_status="Order Processing").order_by("-id")
-        return query
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Processing"
+        context["allorders"] = Order.objects.filter(order_status="Order Processing").order_by("-id")
+        return context
 
 
 class AdminOrderCompletedView(AdminRequiredMixin, ListView):
     model = Order
     template_name = "admin/order_list/order_list.html"
-    context_object_name = "allorders"
 
-    def get_queryset(self):
-        query = super().get_queryset()
-        query = query.filter(order_status="Order Completed").order_by("-id")
-        return query
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Completed"
+        context["allorders"] = Order.objects.filter(order_status="Order Completed").order_by("-id")  # Corrected here
+        return context
+    
 
 
 class AdminOrderWayView(AdminRequiredMixin, ListView):
     model = Order
     template_name = "admin/order_list/order_list.html"
-    context_object_name = "allorders"
 
-    def get_queryset(self):
-        query = super().get_queryset()
-        query = query.filter(order_status="On the way").order_by("-id")
-        return query
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Completed"
+        context["allorders"] = Order.objects.filter(order_status="On the way").order_by("-id")
+        return context
 
 
 class AdminOrderCanceledView(AdminRequiredMixin, ListView):
     model = Order
     template_name = "admin/order_list/order_list.html"
-    context_object_name = "allorders"
 
-    def get_queryset(self):
-        query = super().get_queryset()
-        query = query.filter(order_status="Order Canceled").order_by("-id")
-        return query
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Canceled"
+        context["allorders"] = Order.objects.filter(order_status="Order Canceled").order_by("-id")  
+        return context
 
 
 class AdminOrderDetailView(AdminRequiredMixin, DetailView):
