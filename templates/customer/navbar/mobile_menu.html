@@ -28,6 +28,15 @@
                                 Cart
                             </a>
                         </li>
+                        <li class="menu-item-has-children"><a href="#">Category</a>
+                            <ul class="dropdown">
+                                {% for category in categories %}
+                                <li><a href="{% url 'ecomapp:category-list' category.id %}">{{category.title}} </a></li>
+                                {% endfor %}
+                                <li><a href="{% url 'ecomapp:category' %}" class="text-warning">All category </a></li>
+                            </ul>
+                        </li>
+
                         {% if request.user.customer %}
                         <li class="menu-item-has-children">
                             <a href="{% url 'ecomapp:customerprofile' %}">

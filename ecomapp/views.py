@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import redirect, render
 from django.views.generic import *
 from django.contrib.auth import authenticate, login, logout
@@ -119,7 +120,7 @@ class CategoriesListView(EcomMixin, ListView):
         ).order_by("-id")
         return query
     
-class CategoryListView(ListView):
+class CategoryListView(EcomMixin, ListView):
     model = Category
     template_name = "customer/categoryNameList/categoryList.html"
     context_object_name="categorylist"
@@ -127,6 +128,18 @@ class CategoryListView(ListView):
     def get_context_data(self):
         context = super().get_context_data()
         context["title"] = "Category"
+        return context
+from django.db.models import Q
+class SearchView(EcomMixin, TemplateView):
+    template_name = "customer/product_list/product_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        kw = self.request.GET.get("keyword")
+        results = Product.objects.filter(
+            Q(title__icontains=kw) | Q(description__icontains=kw) )
+        print(results)
+        context["products"] = results
         return context
 
 

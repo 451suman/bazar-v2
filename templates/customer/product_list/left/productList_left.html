@@ -3,39 +3,14 @@
         <div class="sidebar-widget">
             <h4 class="pro-sidebar-title">Search </h4>
             <div class="pro-sidebar-search mb-50 mt-25">
-                <form class="pro-sidebar-search-form" action="#">
-                    <input type="text" placeholder="Search here...">
-                    <button>
-                        <i class="sli sli-magnifier"></i>
-                    </button>
+                <form class="pro-sidebar-search-form" action="{% url 'ecomapp:search' %}" method="get">
+                    {% csrf_token %}
+                    <input type="search" placeholder="Search Product here..."  name="keyword" id="" required>
+                    <button type="submit"><i class="sli sli-magnifier"></i></button>
                 </form>
             </div>
         </div>
-        <div class="sidebar-widget">
-            <h4 class="pro-sidebar-title">Refine By </h4>
-            <div class="sidebar-widget-list mt-30">
-                <ul>
-                    <li>
-                        <div class="sidebar-widget-list-left">
-                            <input type="checkbox"> <a href="#">On Sale <span>4</span> </a>
-                            <span class="checkmark"></span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="sidebar-widget-list-left">
-                            <input type="checkbox" value=""> <a href="#">New <span>5</span></a>
-                            <span class="checkmark"></span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="sidebar-widget-list-left">
-                            <input type="checkbox" value=""> <a href="#">In Stock <span>6</span> </a>
-                            <span class="checkmark"></span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        
         <div class="sidebar-widget mt-45">
             <h4 class="pro-sidebar-title">Filter By Price </h4>
             <div class="price-filter mt-10">
@@ -45,77 +20,16 @@
                 <div id="slider-range"></div>
             </div>
         </div>
+        
+       
         <div class="sidebar-widget mt-50">
-            <h4 class="pro-sidebar-title">Colour </h4>
-            <div class="sidebar-widget-list mt-20">
-                <ul>
-                    <li>
-                        <div class="sidebar-widget-list-left">
-                            <input type="checkbox" value=""> <a href="#">Green <span>7</span> </a>
-                            <span class="checkmark"></span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="sidebar-widget-list-left">
-                            <input type="checkbox" value=""> <a href="#">Cream <span>8</span> </a>
-                            <span class="checkmark"></span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="sidebar-widget-list-left">
-                            <input type="checkbox" value=""> <a href="#">Blue <span>9</span> </a>
-                            <span class="checkmark"></span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="sidebar-widget-list-left">
-                            <input type="checkbox" value=""> <a href="#">Black <span>3</span> </a>
-                            <span class="checkmark"></span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="sidebar-widget mt-40">
-            <h4 class="pro-sidebar-title">Size </h4>
-            <div class="sidebar-widget-list mt-20">
-                <ul>
-                    <li>
-                        <div class="sidebar-widget-list-left">
-                            <input type="checkbox" value=""> <a href="#">XL <span>4</span> </a>
-                            <span class="checkmark"></span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="sidebar-widget-list-left">
-                            <input type="checkbox" value=""> <a href="#">L <span>5</span> </a>
-                            <span class="checkmark"></span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="sidebar-widget-list-left">
-                            <input type="checkbox" value=""> <a href="#">SM <span>6</span> </a>
-                            <span class="checkmark"></span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="sidebar-widget-list-left">
-                            <input type="checkbox" value=""> <a href="#">XXL <span>7</span> </a>
-                            <span class="checkmark"></span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="sidebar-widget mt-50">
-            <h4 class="pro-sidebar-title">Tag </h4>
+            <h4 class="pro-sidebar-title">Categories </h4>
             <div class="sidebar-widget-tag mt-25">
                 <ul>
-                    <li><a href="#">Clothing</a></li>
-                    <li><a href="#">Accessories</a></li>
-                    <li><a href="#">For Men</a></li>
-                    <li><a href="#">Women</a></li>
-                    <li><a href="#">Fashion</a></li>
+                    {% for category in categories %}
+                    <li><a href="{% url 'ecomapp:category-list' category.id %}">{{category.title}}</a></li>
+                    {% endfor %}
+                    <li><a href="{% url 'ecomapp:category' %}">All category</a></li>
                 </ul>
             </div>
         </div>
