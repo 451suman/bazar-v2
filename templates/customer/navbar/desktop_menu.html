@@ -37,6 +37,15 @@
                                         Cart
                                     </a>
                                 </li>
+                                <li class="angle-shape"><a href="#">categories </a>
+                                    <ul class="submenu">
+                                        {% for category in categories %}
+                                        <li><a href="{% url 'ecomapp:category-list' category.id %}">{{category.title}} </a></li>
+                                        {% endfor %}
+                                        <li><a href="{% url 'ecomapp:category' %}" class="text-warning">All category </a></li>
+                                    </ul>
+
+                                </li>
 
                                 {% if request.user.is_authenticated and request.user.customer %}
 

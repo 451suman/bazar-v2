@@ -1,0 +1,24 @@
+{% extends "customer/base.html" %}
+
+{% block title %} {{title}} page {% endblock %}
+{% block content %}
+<div style="text-align:center;">
+    <h2>All {{title}}</h2>
+</div>
+
+<div class="sidebar-style mr-30">
+        
+    <div class="sidebar-widget mt-50">
+        <h4 class="pro-sidebar-title">Tag </h4>
+        <div class="sidebar-widget-tag mt-25">
+            <ul>
+                {%  for category in categorylist %}
+                <li><a href="{% url 'ecomapp:category-list' category.id %}">{{category.title}}</a></li>
+                
+                {% endfor %}
+            </ul>
+            
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -6,14 +6,13 @@ from ecomapp.models import *
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 # Create your views here.
-
-
 
 
 # -------------------Customer Login register--------------------------------------------------------------
 class CustomerRegisterView(CreateView):
-    template_name = 'customer/registration/signup.html'
+    template_name = "customer/registration/signup.html"
     form_class = CustomerRegistrationsForm
     success_url = reverse_lazy("ecomapp:home")
 
@@ -23,19 +22,23 @@ class CustomerRegisterView(CreateView):
         email = form.cleaned_data.get("email")
 
         # Create user with hashed password
-        user = User.objects.create_user(username=username, password=password, email=email)
+        user = User.objects.create_user(
+            username=username, password=password, email=email
+        )
 
         form.instance.user = user
         login(self.request, user)
-        
+
         messages.success(self.request, "Registration successful")
 
         return super().form_valid(form)
+
 
 class CustomerLogoutView(View):
     def get(self, request):
         logout(request)
         return redirect("ecomapp:home")
+
 
 class CustomerLoginView(FormView):
     template_name = "customer/registration/login.html"
@@ -50,17 +53,20 @@ class CustomerLoginView(FormView):
         if usr is not None and Customer.objects.filter(user=usr).exists():
             login(self.request, usr)
         else:
-            return render(self.request, self.template_name, {"form": self.form_class, "error": "Invalid credentials"})
+            return render(
+                self.request,
+                self.template_name,
+                {"form": self.form_class, "error": "Invalid credentials"},
+            )
 
         return super().form_valid(form)
 
 
-
-
 # -----------------------------------------------------------------------------------------------------------------------
-#  The dispatch method is overridden. This method is called when a request is made to a view. 
+#  The dispatch method is overridden. This method is called when a request is made to a view.
 # It processes the request before any specific view logic is executed.
 # just like static in java
+
 
 class EcomMixin(object):
     def dispatch(self, request, *args, **kwargs):
@@ -71,6 +77,7 @@ class EcomMixin(object):
                 cart_obj.customer = request.user.customer
                 cart_obj.save()
         return super().dispatch(request, *args, **kwargs)
+
 
 class HomeView(EcomMixin, ListView):
     model = Product
@@ -99,10 +106,35 @@ class ProductListView(EcomMixin, ListView):
         return query
 
 
+class CategoriesListView(EcomMixin, ListView):
+    model = Product
+    template_name = "customer/product_list/product_list.html"
+    context_object_name = "products"
+    paginate_by = 9
+
+    def get_queryset(self):
+        query = super().get_queryset()
+        query = query.filter(
+            category__id=self.kwargs["cid"],
+        ).order_by("-id")
+        return query
+    
+class CategoryListView(ListView):
+    model = Category
+    template_name = "customer/categoryNameList/categoryList.html"
+    context_object_name="categorylist"
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["title"] = "Category"
+        return context
+
+
 # class idProductDetailView(EcomMixin, DetailView):
 #     model = Product
 #     template_name = "customer/productDetailPage/product_detail_page.html"
 #     context_object_name = "product"
+
 
 class ProductDetailView(EcomMixin, TemplateView):
     template_name = "customer/productDetailPage/product_detail_page.html"
@@ -113,7 +145,6 @@ class ProductDetailView(EcomMixin, TemplateView):
         print(slug)
         context["product"] = Product.objects.get(slug=slug)
         return context
-
 
 
 class AddToCartView(EcomMixin, View):
@@ -172,8 +203,6 @@ class AddToCartView(EcomMixin, View):
 class MyCartView(EcomMixin, TemplateView):
     template_name = "customer/cart/cart.html"
 
-   
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cart_id = self.request.session.get("cart_id", None)
@@ -185,8 +214,6 @@ class MyCartView(EcomMixin, TemplateView):
             cart = None
         context["cart"] = cart
         return context
-    
-
 
 
 class ManageCartView(EcomMixin, View):
@@ -235,6 +262,7 @@ class EmpytCartView(EcomMixin, View):
             cart.save()
         return redirect("ecomapp:mycart")
 
+
 class CheckoutView(EcomMixin, CreateView):
     model = Order  # Define the model here
     template_name = "customer/checkout/checkout.html"
@@ -246,7 +274,6 @@ class CheckoutView(EcomMixin, CreateView):
         else:
             return redirect("/login/?next=/checkout/")
         return super().dispatch(request, *args, **kwargs)
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -279,19 +306,19 @@ class CheckoutView(EcomMixin, CreateView):
             return redirect("ecomapp:home")
 
         return super().form_valid(form)
-    
+
 
 class CustomerProfileView(TemplateView):
     template_name = "customer/my_account/myaccount.html"
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated  and request.user.customer:
+        if request.user.is_authenticated and request.user.customer:
             pass
         else:
             return redirect("ecomapp:customerlogin")
 
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -302,15 +329,15 @@ class CustomerProfileView(TemplateView):
         context["orders"] = order
         return context
 
+
 class CustomerOrderDetailView(DetailView):
     model = Order
-    template_name="customer/orderdetailView/customerorderdetail.html"
+    template_name = "customer/orderdetailView/customerorderdetail.html"
     context_object_name = "ord_obj"
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated  and request.user.customer:
+        if request.user.is_authenticated and request.user.customer:
             pass
         else:
             return redirect("ecomapp:customerlogin")
         return super().dispatch(request, *args, **kwargs)
-

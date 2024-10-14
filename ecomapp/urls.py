@@ -8,6 +8,11 @@ urlpatterns = [
     # path("product/<int:pk>/", idProductDetailView.as_view(), name="productdetail"),
     path("product/<slug:slug>/", ProductDetailView.as_view(), name="productdetail"),
 
+    path("category-list/<int:cid>/", CategoriesListView.as_view(), name="category-list"),
+    path("category/", CategoryListView.as_view(), name="category"),
+
+
+
     path("my-cart/", MyCartView.as_view(), name="mycart"),
     path("add-to-cart-<int:pro_id>/", AddToCartView.as_view(), name="addtocart"),
     path("manage-cart/<int:cp_id>/", ManageCartView.as_view(), name="managecart"),
