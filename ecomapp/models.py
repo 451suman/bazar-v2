@@ -15,6 +15,8 @@ class Customer(models.Model):
     user= models.OneToOneField(User, on_delete= models.CASCADE)
     full_name = models.CharField(max_length=50)
     address = models.CharField(max_length=60, null = True, blank = True)
+    mobile = models.PositiveBigIntegerField() #
+
     joined_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -36,7 +38,6 @@ class Product (models.Model):
     description = models.TextField()
     warranty = models.CharField(max_length=50, null = True, blank = True)
     return_policy = models.CharField(max_length=50, null = True, blank = True)
-    view_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title

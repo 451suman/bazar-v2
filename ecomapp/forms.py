@@ -10,7 +10,7 @@ class CustomerRegistrationsForm(forms.ModelForm):
     email = forms.CharField(widget=forms.EmailInput())
     class Meta:
         model = Customer
-        fields =["username","password","email","full_name", "address", ]
+        fields =["username","password","email","full_name", "address","mobile" ]
 
     def clean_username(self):
         uname = self.cleaned_data.get("username")
@@ -27,6 +27,20 @@ class CustomerRegistrationsForm(forms.ModelForm):
                 "Customer with this email already exists.")
 
         return uemail
+    
+def clean_mobile(self):
+    mob = self.cleaned_data.get("mobile")
+    
+    # Check if the mobile number is numeric
+    if not mob.isdigit():
+        raise forms.ValidationError("Mobile number must contain only digits.")
+    
+    # Check if the mobile number is already registered
+    if User.objects.filter(mobile=mob).exists():
+        raise forms.ValidationError("Mobile Number already registered in the system.")
+    
+    return mob
+
 
 
 

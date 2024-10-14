@@ -142,7 +142,6 @@ class SearchView(EcomMixin, TemplateView):
         context["products"] = results
         return context
 
-
 # class idProductDetailView(EcomMixin, DetailView):
 #     model = Product
 #     template_name = "customer/productDetailPage/product_detail_page.html"
@@ -287,6 +286,10 @@ class CheckoutView(EcomMixin, CreateView):
         else:
             return redirect("/login/?next=/checkout/")
         return super().dispatch(request, *args, **kwargs)
+    
+
+
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

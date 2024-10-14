@@ -1,84 +1,49 @@
-<style>
-    .payment-method {
-        margin-top: 20px;
-    }
-
-    .payment-option {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .payment-option label {
-        margin-left: 10px;
-        font-size: 16px;
-        font-weight: 500;
-    }
-
-    .payment-method input[type="radio"] {
-        transform: scale(1.3);
-        accent-color: #ff0000;
-        /* Custom color for radio button */
-        height: 25px !important;
-    }
-
-    /* Adjust button spacing */
-    .btn-danger {
-        margin-top: 20px;
-    }
-</style>
-
 <form action="" method="POST" class="row g-3">
     {% csrf_token %}
+    
     <div class="col-lg-6 col-md-6">
         <div class="form-group">
             <label for="ordered_by">Order By: <abbr class="required" title="required">*</abbr></label>
             <input type="text" name="ordered_by" id="ordered_by" class="form-control"
-                value="{% if form.ordered_by.value %}{{ form.ordered_by.value }}{% endif %}" required>
+                value="{{ user.customer.full_name }}" required readonly="readonly">
             {{ form.ordered_by.errors }}
         </div>
     </div>
+    
     <div class="col-lg-6 col-md-6">
         <div class="form-group">
             <label for="mobile">Mobile: <abbr class="required" title="required">*</abbr></label>
             <input type="tel" name="mobile" id="mobile" class="form-control"
-                value="{% if form.mobile.value %}{{ form.mobile.value }}{% endif %}" required>
+                value="{{user.customer.mobile}}" required readonly="readonly">
             {{ form.mobile.errors }}
         </div>
     </div>
-    <div class="col-12">
-        <div class="form-group">
-            <label for="street_address">Street Address <abbr class="required" title="required">*</abbr></label>
-            <input type="text" name="shipping_address" id="street_address" class="form-control"
-                placeholder="House number and street name"
-                value="{% if form.shipping_address.value %}{{ form.shipping_address.value }}{% endif %}" required>
-            {{ form.shipping_address.errors }}
-        </div>
-    </div>
+    
     <div class="col-12">
         <div class="form-group">
             <label for="email">Email Address <abbr class="required" title="required">*</abbr></label>
             <input type="email" name="email" id="email" class="form-control"
-                value="{% if form.email.value %}{{ form.email.value }}{% endif %}" required>
+                value="{{user.email}}" readonly="readonly" required>
             {{ form.email.errors }}
         </div>
     </div>
 
-    <!-- Payment Method Section -->
-    <!-- <div class="col-3">
-        <div class="payment-method">
-            <div class="payment-option">
-                <input type="radio" value="cash_on_delivery" name="payment_method" id="cash_on_delivery">
-                <label for="cash_on_delivery">Cash on Delivery</label>
-            </div>
-
-            <div class="payment-option">
-                <input type="radio" value="khalti" name="payment_method" id="khalti">
-                <label for="khalti">Khalti</label>
-            </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label for="street_address">Street Address <abbr class="required" title="required">*</abbr></label>
+            <input type="text" name="shipping_address" id="street_address" class="form-control"
+                placeholder=" "
+                value="{{ user.customer.address }}" required>
+                <p style="font-size:10px">
+                    # Change the address if you want us to deliver to another location. Eg: City, Road Name
+                </p>
+                <p style="font-size:10px"></p>
+                            {{ form.shipping_address.errors }}
         </div>
-    </div> -->
-
+    </div>
+    
+    
+    
     <div class="col-12 text-center">
         <button type="submit" class="btn btn-danger">Place an Order</button>
     </div>

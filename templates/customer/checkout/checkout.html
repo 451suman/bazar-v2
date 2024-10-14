@@ -1,14 +1,14 @@
 {% extends "customer/base.html" %}
 
-{% block title %} Checkout {% endblock %}
-{% block content %}
+{% block title %}Checkout{% endblock %}
 
+{% block content %}
 <div class="breadcrumb-area pt-35 pb-35 bg-gray">
     <div class="container">
         <div class="breadcrumb-content text-center">
             <ul>
                 <li>
-                    <a href="{% url 'ecomapp:home' %}">Home</a> <!-- Updated to use Django's URL tag -->
+                    <a href="{% url 'ecomapp:home' %}">Home</a>
                 </li>
                 <li class="active">Checkout</li>
             </ul>
@@ -16,8 +16,8 @@
     </div>
 </div>
 
-<!-- checkout main wrapper start -->
-<div class="checkout-main-area pt-70 pb-70">
+<!-- Checkout main wrapper start -->
+<main class="checkout-main-area pt-70 pb-70">
     <div class="container">
         <a href="{% url 'ecomapp:mycart' %}" class="btn btn-primary">Update Cart</a>
 
@@ -38,6 +38,5 @@
             </div>
         </div>
     </div>
-</div>
-
+</main>
 {% endblock content %}
