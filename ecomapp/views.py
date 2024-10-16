@@ -275,19 +275,11 @@ class EmpytCartView(EcomMixin, View):
         return redirect("ecomapp:mycart")
 
 
-class CheckoutView(EcomMixin, CreateView):
+class CheckoutView(CreateView):
     model = Order  # Define the model here
     template_name = "customer/checkout/checkout.html"
     form_class = CheckoutForm
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.customer:
-            pass
-        else:
-            return redirect("/login/?next=/checkout/")
-        return super().dispatch(request, *args, **kwargs)
-    
-
+    success_url = reverse_lazy("ecomapp:home")
 
 
 
@@ -307,21 +299,27 @@ class CheckoutView(EcomMixin, CreateView):
         if cart_id:
             cart_obj = Cart.objects.get(id=cart_id)
 
+            # Check if an order already exists for this cart
+            existing_order = Order.objects.filter(cart=cart_obj).first()
+            if existing_order:
+                messages.warning(self.request, "An order has already been placed for this cart.")
+                return redirect(self.success_url)
+
             form.instance.cart = cart_obj
             form.instance.subtotal = cart_obj.total
             form.instance.discount = 0
             form.instance.total = cart_obj.total
             form.instance.order_status = "Order Received"
-            order = form.save()
-            # now delete cart_id which is store in Session
+
+            # Clear cart_id from session
             del self.request.session["cart_id"]
 
             messages.success(self.request, "Order has been received")
-            return redirect("ecomapp:customerorderdetail", pk=order.pk)
         else:
             return redirect("ecomapp:home")
 
         return super().form_valid(form)
+
 
 
 class CustomerProfileView(TemplateView):

@@ -1,6 +1,6 @@
 {% extends "customer/base.html" %}
 
-{% block title %}Checkout{% endblock %}
+{% block title %}{{title}}{% endblock %}
 
 {% block content %}
 <div class="breadcrumb-area pt-35 pb-35 bg-gray">
@@ -27,6 +27,7 @@
                     <div class="billing-info-wrap mr-50">
                         <h3>Billing Details</h3>
                         <div class="row">
+                            <h4>{{ title }}</h4>  <!-- Ensure title is displayed -->
                             {% include 'customer/checkout/left/checkoutform.html' %}
                         </div>
                     </div>
