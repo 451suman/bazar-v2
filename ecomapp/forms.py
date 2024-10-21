@@ -47,7 +47,7 @@ def clean_mobile(self):
 class CheckoutForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields =["ordered_by","shipping_address","mobile","email"]
+        fields =["customer","ordered_by","shipping_address","mobile","email"]
 
     def clean_mobile(self):
         mob = self.cleaned_data["mobile"]

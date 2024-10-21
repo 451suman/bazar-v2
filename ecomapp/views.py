@@ -315,7 +315,7 @@ class CheckoutView(CreateView):
             if existing_order:
                 messages.warning(self.request, "An order has already been placed for this cart.")
                 return redirect(self.success_url)
-
+            form.instance.customer = self.request.user.customer 
             form.instance.cart = cart_obj
             form.instance.subtotal = cart_obj.total
             form.instance.discount = 0

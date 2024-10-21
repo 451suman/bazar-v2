@@ -72,6 +72,7 @@ ORDER_STATUS =(
 
 class Order(models.Model):
     cart = models.OneToOneField(Cart, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank= True)
     ordered_by = models.CharField(max_length=50) #
     shipping_address = models.CharField(max_length=60) #
     mobile = models.CharField(max_length=10) #
@@ -83,3 +84,14 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return "Order: " +str(self.id)
+
+
+class Review(models.Model): 
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE) 
+    product = models.ForeignKey(Product, on_delete=models.CASCADE) 
+    rating = models.PositiveIntegerField(default=1) 
+    # Assuming a rating scale of 1-5 
+    review_text = models.TextField(null=True, blank=True) 
+    created_at = models.DateTimeField(auto_now_add=True) 
+    def __str__(self):
+        return f"Review by {self.customer.full_name} for {self.product.title}"

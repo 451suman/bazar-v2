@@ -1,6 +1,6 @@
 <form action="" method="POST" class="row g-3">
     {% csrf_token %}
-    
+
     <div class="col-lg-6 col-md-6">
         <div class="form-group">
             <label for="ordered_by">Order By: <abbr class="required" title="required">*</abbr></label>
@@ -9,21 +9,21 @@
             {{ form.ordered_by.errors }}
         </div>
     </div>
-    
+
     <div class="col-lg-6 col-md-6">
         <div class="form-group">
             <label for="mobile">Mobile: <abbr class="required" title="required">*</abbr></label>
-            <input type="tel" name="mobile" id="mobile" class="form-control"
-                value="{{user.customer.mobile}}" required readonly="readonly">
+            <input type="tel" name="mobile" id="mobile" class="form-control" value="{{user.customer.mobile}}" required
+                readonly="readonly">
             {{ form.mobile.errors }}
         </div>
     </div>
-    
+
     <div class="col-12">
         <div class="form-group">
             <label for="email">Email Address <abbr class="required" title="required">*</abbr></label>
-            <input type="email" name="email" id="email" class="form-control"
-                value="{{user.email}}" readonly="readonly" required>
+            <input type="email" name="email" id="email" class="form-control" value="{{user.email}}" readonly="readonly"
+                required>
             {{ form.email.errors }}
         </div>
     </div>
@@ -31,19 +31,18 @@
     <div class="col-12">
         <div class="form-group">
             <label for="street_address">Street Address <abbr class="required" title="required">*</abbr></label>
-            <input type="text" name="shipping_address" id="street_address" class="form-control"
-                placeholder=" "
+            <input type="text" name="shipping_address" id="street_address" class="form-control" placeholder=" "
                 value="{{ user.customer.address }}" required>
-                <p style="font-size:10px">
-                    # Change the address if you want us to deliver to another location. Eg: City, Road Name
-                </p>
-                <p style="font-size:10px"></p>
-                            {{ form.shipping_address.errors }}
+            <p style="font-size:10px">
+                # Change the address if you want us to deliver to another location. Eg: City, Road Name
+            </p>
+            <p style="font-size:10px"></p>
+            {{ form.shipping_address.errors }}
         </div>
     </div>
-    
-    
-    
+
+
+
     <div class="col-12 text-center">
         <button type="submit" class="btn btn-danger">Place an Order</button>
     </div>

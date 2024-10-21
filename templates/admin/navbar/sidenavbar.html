@@ -56,7 +56,7 @@
                 <div class="menu-title">Order</div>
             </a>
             <ul>
-                {% if request.user.admin %}
+                {% if request.user.admin or request.user.is_superuser %}
                     <li><a class="text-body bg-warning" href="{% url 'ecomappadmin:admin-orders-received' %}"><i class="bx bx-right-arrow-alt"></i>Order Received ({{ Received }})</a></li>
                     <li><a class="text-body bg-info" href="{% url 'ecomappadmin:admin-orders-processing' %}"><i class="bx bx-right-arrow-alt"></i>Order Processing ({{ Processing }})</a></li>
                     <li><a class="text-body bg-info" href="{% url 'ecomappadmin:admin-orders-way' %}"><i class="bx bx-right-arrow-alt"></i>On the Way ({{ way }})</a></li>
