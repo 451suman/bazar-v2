@@ -7,7 +7,7 @@ from ecomapp.models import *
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.db.models import Q
 # Create your views here.
 
 
@@ -129,7 +129,10 @@ class CategoryListView(EcomMixin, ListView):
         context = super().get_context_data()
         context["title"] = "Category"
         return context
-from django.db.models import Q
+
+
+
+
 class SearchView(EcomMixin, TemplateView):
     template_name = "customer/product_list/product_list.html"
 
@@ -280,6 +283,14 @@ class CheckoutView(CreateView):
     template_name = "customer/checkout/checkout.html"
     form_class = CheckoutForm
     success_url = reverse_lazy("ecomapp:home")
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.customer:
+            pass
+        else:
+            return redirect("ecomapp:customerlogin")
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 
