@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.db.models import Avg
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
 
@@ -79,6 +80,15 @@ class EcomMixin(object):
                 cart_obj.customer = request.user.customer
                 cart_obj.save()
         return super().dispatch(request, *args, **kwargs)
+    
+class customerRequiredMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and Customer.objects.filter(user=request.user).exists():
+            pass
+        else:
+            return redirect("ecomapp:customerlogin")
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 class HomeView(EcomMixin, ListView):
@@ -94,6 +104,8 @@ class HomeView(EcomMixin, ListView):
         context["products"] = Product.objects.all().order_by("-id")[:8]
 
         return context
+
+
 
 
 class ProductListView(EcomMixin, ListView):
@@ -162,9 +174,7 @@ class SearchView(EcomMixin, TemplateView):
 #         context["product"] = Product.objects.get(slug=slug)
 #         return context
 
-from django.views.generic import TemplateView
-from django.shortcuts import get_object_or_404
-from .models import Product, Order, Review, Customer
+
 
 class ProductDetailView(EcomMixin, TemplateView):
     template_name = "customer/productDetailPage/product_detail_page.html"
@@ -179,12 +189,19 @@ class ProductDetailView(EcomMixin, TemplateView):
         context["reviewcount"] = Review.objects.filter(product=product).count()
         reviews = Review.objects.filter(product=product)
         context["all_review"] = reviews
-        context["average_rating"] = round(reviews.aggregate(Avg('rating'))['rating__avg'])
-        # context["average_rating"] = int(reviews.aggregate(Avg('rating'))['rating__avg'])
+        # Calculate the average rating
+        average_rating_data = reviews.aggregate(Avg('rating'))['rating__avg']
         
-
+        if average_rating_data is not None:
+            average_rating = round(average_rating_data)
+            if 1 <= average_rating <= 5:
+                context["average_rating"] = average_rating
+            else:
+                context["average_rating"] = 0
+        else:
+            context["average_rating"] = 0
+        
         can_review = False
-
         # Check if the user is authenticated and is a customer
         if self.request.user.is_authenticated and Customer.objects.filter(user=self.request.user).exists():
             order_items = Order.objects.filter(
@@ -198,10 +215,16 @@ class ProductDetailView(EcomMixin, TemplateView):
             if order_items.exists() and not has_reviewed:
                 can_review = True
 
-        # print("-------------------------------------------------------------------")
-        # print("-------------------------------------------------------------------")
-        # print("-------------------------------------------------------------------")
-        # print(can_review)
+        context["can_review"] = can_review
+
+        return context
+
+
+        print("-------------------------------------------------------------------")
+        print("-------------------------------------------------------------------")
+        print("-------------------------------------------------------------------")
+        print(can_review)
+        print(average_rating)
 
         context["can_review"] = can_review
 
@@ -346,21 +369,11 @@ class EmpytCartView(EcomMixin, View):
         return redirect("ecomapp:mycart")
 
 
-class CheckoutView(CreateView):
+class CheckoutView(customerRequiredMixin, CreateView):
     model = Order  # Define the model here
     template_name = "customer/checkout/checkout.html"
     form_class = CheckoutForm
     success_url = reverse_lazy("ecomapp:home")
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.customer:
-            pass
-        else:
-            return redirect("ecomapp:customerlogin")
-
-        return super().dispatch(request, *args, **kwargs)
-
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -401,16 +414,8 @@ class CheckoutView(CreateView):
 
 
 
-class CustomerProfileView(TemplateView):
+class CustomerProfileView(customerRequiredMixin,TemplateView):
     template_name = "customer/my_account/myaccount.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.customer:
-            pass
-        else:
-            return redirect("ecomapp:customerlogin")
-
-        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -423,14 +428,9 @@ class CustomerProfileView(TemplateView):
         return context
 
 
-class CustomerOrderDetailView(DetailView):
+class CustomerOrderDetailView(customerRequiredMixin, DetailView):
     model = Order
     template_name = "customer/orderdetailView/customerorderdetail.html"
     context_object_name = "ord_obj"
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.customer:
-            pass
-        else:
-            return redirect("ecomapp:customerlogin")
-        return super().dispatch(request, *args, **kwargs)
+    

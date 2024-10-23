@@ -27,7 +27,7 @@
                             <p>Your email address will not be published. Required fields are marked <span>*</span></p>
 
                             {% include 'customer/productDetailPage/detatil/reviewform.html'%}
-                           
+
                         </div>
                         {% endif %}
                     </div>
@@ -36,8 +36,8 @@
                         <div class="product-description-wrapper">
                             <div class="product-warranty-return">
                                 <strong>Warranty:</strong> {{ product.warranty | default:"No warranty" }}<br>
-                                <strong>Return Policy:</strong> {{ product.return_policy | default:"No return policy
-                                available." }}
+                                <strong>Return Policy:</strong>
+                                {{ product.return_policy | default:"No return policy available." }}
                             </div>
                         </div>
                     </div>
