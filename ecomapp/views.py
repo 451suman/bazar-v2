@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.db.models import Avg
 # Create your views here.
 
 
@@ -175,7 +176,12 @@ class ProductDetailView(EcomMixin, TemplateView):
         # Get the product or return a 404 if not found
         product = get_object_or_404(Product, slug=slug)
         context["product"] = product
-        context["all_review"] = Review.objects.filter(product=product)
+        context["reviewcount"] = Review.objects.filter(product=product).count()
+        reviews = Review.objects.filter(product=product)
+        context["all_review"] = reviews
+        context["average_rating"] = round(reviews.aggregate(Avg('rating'))['rating__avg'])
+        # context["average_rating"] = int(reviews.aggregate(Avg('rating'))['rating__avg'])
+        
 
         can_review = False
 

@@ -24,16 +24,19 @@
                     </div>
                     <div class="pro-details-rating-wrap">
                         <div class="pro-details-rating">
-                            <span><a href="#">3 Reviews</a></span>
+                            <span><a href="#">{{reviewcount}} Reviews</a></span>
                         </div>
                         <div class="pro-details-rating">
-                            <i class="sli sli-star yellow"></i>
-                            <i class="sli sli-star yellow"></i>
-                            <i class="sli sli-star yellow"></i>
-                            <i class="sli sli-star yellow"></i>
-                            <i class="sli sli-star yellow"></i>
+                            {% for i in "12345" %}
+                            {% if forloop.counter <= average_rating %}
+                            ⭐
+                            {% else %}
+                            <i class="sli sli-star"></i> <!-- Empty star for the remaining ones -->
+                            {% endif %}
+                            {% endfor %}
                         </div>
-                        <span><a href="#">3 Views</a></span>
+                        {{average_rating}}
+                        <!-- <span><a href="#">3 Views</a></span> -->
                     </div>
                     <div class="pro-details-quality">
                         <a href="{% url 'ecomapp:addtocart' product.id %}" class="btn btn-primary">Add To Cart Now</a>
