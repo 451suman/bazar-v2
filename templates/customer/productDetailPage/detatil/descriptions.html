@@ -1,119 +1,71 @@
 {% load static %}
 <div class="description-review-area pb-95"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-8">
-                <div class="description-review-wrapper">
-                    <div class="description-review-topbar nav">
-                        <a class="active" data-toggle="tab" href="#des-details1">Description</a>
-                        <a data-toggle="tab" href="#des-details2">Reviews (3)</a>
-                        <a data-toggle="tab" href="#des-details3">Warranty & Return ploicy (3)</a>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 col-md-8">
+            <div class="description-review-wrapper">
+                <div class="description-review-topbar nav">
+                    <a class="active" data-toggle="tab" href="#des-details1">Description</a>
+                    <a data-toggle="tab" href="#des-details2">Reviews (3)</a>
+                    <a data-toggle="tab" href="#des-details3">Warranty & Return Policy</a>
+                </div>
+                <div class="tab-content description-review-bottom">
+                    <div id="des-details1" class="tab-pane active">
+                        <div class="product-description-wrapper">
+                            <p>{{ product.description|safe|linebreaksbr }}</p>
+                        </div>
                     </div>
-                    <div class="tab-content description-review-bottom">
-                        <div id="des-details1" class="tab-pane active">
-                            <div class="product-description-wrapper">
-                                <p>{{product.description|safe|linebreaksbr}}</p>
-                            </div>
+
+                    <div id="des-details2" class="tab-pane">
+                        <div class="review-wrapper">
+                            {% include "customer/productDetailPage/detatil/allreview.html" %}
                         </div>
-                        <div id="des-details3" class="tab-pane active">
-                            <div class="product-description-wrapper">
-                                <p> <div class="product-warranty-return">
-                                    <strong>Warranty:</strong> {{ product.warranty | default:"No warranty "  }}<br>
-                                    <strong>Return Policy:</strong> {{ product.return_policy | default:"No return policy available." }}
-                                </div></p>
-                            </div>
+                        <hr>
+                        {% if can_review %}
+                        <div class="ratting-form-wrapper">
+                            <span>Add a Review</span>
+                            <p>Your email address will not be published. Required fields are marked <span>*</span></p>
+
+                            {% include 'customer/productDetailPage/detatil/reviewform.html'%}
+                           
                         </div>
-                        
-                        <div id="des-details2" class="tab-pane">
-                            <div class="review-wrapper">
-                                <div class="single-review">
-                                    <div class="review-img">
-                                        <img src="assets/img/product-details/client-1.jpg" alt="">
-                                    </div>
-                                    <div class="review-content">
-                                        <p>“In convallis nulla et magna congue convallis. Donec eu nunc vel justo maximus posuere. Sed viverra nunc erat, a efficitur nibh”</p>
-                                        <div class="review-top-wrap">
-                                            <div class="review-name">
-                                                <h4>Stella McGee</h4>
-                                            </div>
-                                            <div class="review-rating">
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                               
-                            </div>
-                            <hr>
-                            <div class="ratting-form-wrapper">
-                                <span>Add a Review</span>
-                                <p>Your email address will not be published. Required fields are marked <span>*</span></p>
-                                <div class="star-box-wrap">
-                                    <div class="single-ratting-star">
-                                        <i class="sli sli-star"></i>
-                                    </div>
-                                    <div class="single-ratting-star">
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                    </div>
-                                    <div class="single-ratting-star">
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                    </div>
-                                    <div class="single-ratting-star">
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                    </div>
-                                    <div class="single-ratting-star">
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                    </div>
-                                </div>
-                                <div class="ratting-form">
-                                    <form action="#">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="rating-form-style mb-20">
-                                                    <label>Your review <span>*</span></label>
-                                                    <textarea name="Your Review"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="rating-form-style mb-20">
-                                                   <label>Name <span>*</span></label>
-                                                    <input type="text">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="rating-form-style mb-20">
-                                                   <label>Email <span>*</span></label>
-                                                    <input type="email">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="form-submit">
-                                                    <input type="submit" value="Submit">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                        {% endif %}
+                    </div>
+
+                    <div id="des-details3" class="tab-pane">
+                        <div class="product-description-wrapper">
+                            <div class="product-warranty-return">
+                                <strong>Warranty:</strong> {{ product.warranty | default:"No warranty" }}<br>
+                                <strong>Return Policy:</strong> {{ product.return_policy | default:"No return policy
+                                available." }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const stars = document.querySelectorAll('.single-rating-star');
+        const ratingInput = document.getElementById('rating');
+
+        stars.forEach(star => {
+            star.addEventListener('click', function () {
+                const rating = this.getAttribute('data-value');
+                ratingInput.value = rating; // Set the hidden input value
+                updateStarStyles(rating); // Update star visuals
+            });
+        });
+
+        function updateStarStyles(selectedRating) {
+            stars.forEach(star => {
+                const starValue = star.getAttribute('data-value');
+                star.style.color = starValue <= selectedRating ? 'gold' : 'lightgray'; // Change color based on rating
+            });
+        }
+    });
+
+</script>

@@ -151,15 +151,77 @@ class SearchView(EcomMixin, TemplateView):
 #     context_object_name = "product"
 
 
+# class ProductDetailView(EcomMixin, TemplateView):
+#     template_name = "customer/productDetailPage/product_detail_page.html"
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         slug = self.kwargs["slug"]
+#         print(slug)
+#         context["product"] = Product.objects.get(slug=slug)
+#         return context
+
+from django.views.generic import TemplateView
+from django.shortcuts import get_object_or_404
+from .models import Product, Order, Review, Customer
+
 class ProductDetailView(EcomMixin, TemplateView):
     template_name = "customer/productDetailPage/product_detail_page.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs["slug"]
-        print(slug)
-        context["product"] = Product.objects.get(slug=slug)
+
+        # Get the product or return a 404 if not found
+        product = get_object_or_404(Product, slug=slug)
+        context["product"] = product
+        context["all_review"] = Review.objects.filter(product=product)
+
+        can_review = False
+
+        # Check if the user is authenticated and is a customer
+        if self.request.user.is_authenticated and Customer.objects.filter(user=self.request.user).exists():
+            order_items = Order.objects.filter(
+                customer__user=self.request.user,
+                cart__cartproduct__product=product,
+                order_status="Order Completed"
+            )
+
+            has_reviewed = Review.objects.filter(customer__user=self.request.user, product=product).exists()
+
+            if order_items.exists() and not has_reviewed:
+                can_review = True
+
+        # print("-------------------------------------------------------------------")
+        # print("-------------------------------------------------------------------")
+        # print("-------------------------------------------------------------------")
+        # print(can_review)
+
+        context["can_review"] = can_review
+
         return context
+
+class ReviewSubmit(View):
+    def post(self, request, slug):
+        rating = request.POST.get("rating")
+        review_text = request.POST.get("review_text")
+        product = get_object_or_404(Product, slug=slug)
+
+        # Get or create the Customer instance based on the logged-in User
+        customer= Customer.objects.get(user=request.user)
+
+        # Create the review
+        Review.objects.create(
+            product=product,
+            rating=rating,
+            review_text=review_text,
+            customer=customer  # Assign the Customer instance
+        )
+
+        # Redirect to product detail page
+        return redirect('ecomapp:productdetail', slug=slug)
+
+        
 
 
 class AddToCartView(EcomMixin, View):
