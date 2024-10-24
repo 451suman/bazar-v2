@@ -108,6 +108,17 @@ class HomeView(EcomMixin, ListView):
 
 
 
+# class ProductListView(EcomMixin, ListView):
+#     model = Product
+#     template_name = "customer/product_list/product_list.html"
+#     context_object_name = "products"
+#     paginate_by = 9
+
+#     def get_queryset(self):
+#         query = super().get_queryset()
+#         query = Product.objects.all().order_by("-id")
+        # return query
+
 class ProductListView(EcomMixin, ListView):
     model = Product
     template_name = "customer/product_list/product_list.html"
@@ -115,9 +126,18 @@ class ProductListView(EcomMixin, ListView):
     paginate_by = 9
 
     def get_queryset(self):
+        # Get the default queryset
         query = super().get_queryset()
-        query = Product.objects.all().order_by("-id")
-        return query
+        
+        # Add the average rating to each product
+        query = query.annotate(average_rating=Avg('review__rating')).order_by("-id")
+        
+        for product in query:
+            if product.average_rating is not None:
+                product.average_rating = round(product.average_rating) 
+            
+        return query  # Return the updated queryset
+
 
 
 class CategoriesListView(EcomMixin, ListView):
@@ -220,11 +240,11 @@ class ProductDetailView(EcomMixin, TemplateView):
         return context
 
 
-        print("-------------------------------------------------------------------")
-        print("-------------------------------------------------------------------")
-        print("-------------------------------------------------------------------")
-        print(can_review)
-        print(average_rating)
+        # print("-------------------------------------------------------------------")
+        # print("-------------------------------------------------------------------")
+        # print("-------------------------------------------------------------------")
+        # print(can_review)
+        # print(average_rating)
 
         context["can_review"] = can_review
 

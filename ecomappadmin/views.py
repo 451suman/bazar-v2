@@ -28,7 +28,7 @@ class AdminHomeView(AdminRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["newcustomer"] = Customer.objects.all().order_by("-id")[:10]
+        context["newcustomer"] = Customer.objects.all().order_by("-id")[:7]
         context["totalProducts"] = Product.objects.all().count()
         context["totalCategory"] = Category.objects.all().count()
         context["totalorder"] = Order.objects.all().count()
