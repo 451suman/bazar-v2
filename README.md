@@ -9,20 +9,14 @@ This is and ecommerce project.
 
 Follow these steps to set up and run the project on your local machine.
 
-### Prerequisites
-
-- Python 3.x
-- Django
-- pip (Python package installer)
-
 ### Installation
 
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/yourproject.git
-   cd yourproject
+   git clone https://github.com/451suman/bazar-v2.git
    ```
+   Or you can download zip files.
 
 2. **Create a virtual environment**
 
