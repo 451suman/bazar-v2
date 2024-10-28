@@ -30,6 +30,8 @@
                                 <a href="#payment-method" data-toggle="tab"><i class="fa fa-credit-card"></i> Payment
                                     Method</a>
                                 <a href="#account-info" data-toggle="tab"><i class="fa fa-user"></i> Account Details</a>
+                                <!-- <a href="#change-password" data-toggle="tab"><i class="fa fa-user"></i>Change password</a> -->
+                                <a href="{% url 'password_change' %}"><i class="fa fa-user"></i>Change password</a>
                             </div>
                         </div>
                         <!-- My Account Tab Menu End -->
@@ -48,6 +50,7 @@
                                 <!-- Single Tab Content Start -->
                                 {% include "customer/my_account/right/account_details.html" %}
                                 <!-- Single Tab Content End -->
+                                 
                             </div>
                         </div> <!-- My Account Tab Content End -->
                     </div>

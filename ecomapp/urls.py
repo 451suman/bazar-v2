@@ -1,9 +1,13 @@
-from django.urls import path
+from django.urls import include, path
 from .views import *
-
+from django.contrib.auth import views as auth_views
 app_name = "ecomapp"
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
+    
+    path('change-password/', auth_views.PasswordChangeView.as_view(), name='change-password'),
+    path('change-password/done/', auth_views.PasswordChangeDoneView.as_view(), name='change-password-done'),
+
     path("products/", ProductListView.as_view(), name="products"),
     # path("product/<int:pk>/", idProductDetailView.as_view(), name="productdetail"),
     path("product/<slug:slug>/", ProductDetailView.as_view(), name="productdetail"),
