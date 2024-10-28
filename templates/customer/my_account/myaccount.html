@@ -27,8 +27,7 @@
                                 <a href="#dashboad" class="active" data-toggle="tab"><i class="fa fa-dashboard"></i>
                                     Dashboard</a>
                                 <a href="#orders" data-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Orders</a>
-                                <a href="#payment-method" data-toggle="tab"><i class="fa fa-credit-card"></i> Payment
-                                    Method</a>
+                               
                                 <a href="#account-info" data-toggle="tab"><i class="fa fa-user"></i> Account Details</a>
                                 <!-- <a href="#change-password" data-toggle="tab"><i class="fa fa-user"></i>Change password</a> -->
                                 <a href="{% url 'password_change' %}"><i class="fa fa-user"></i>Change password</a>
@@ -45,7 +44,7 @@
                                 {% include "customer/my_account/right/orders.html" %}
                                 <!-- Single Tab Content End -->
                                 <!-- Single Tab Content Start -->
-                                {% include "customer/my_account/right/paymentmethod.html" %}
+                                
                                 <!-- Single Tab Content End -->
                                 <!-- Single Tab Content Start -->
                                 {% include "customer/my_account/right/account_details.html" %}

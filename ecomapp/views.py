@@ -453,4 +453,39 @@ class CustomerOrderDetailView(customerRequiredMixin, DetailView):
     template_name = "customer/orderdetailView/customerorderdetail.html"
     context_object_name = "ord_obj"
 
-    
+from django.core.validators import EmailValidator
+import re
+class CustomerDetailChange(customerRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        full_name = request.POST.get('full_name')
+        address = request.POST.get('address')
+        mobile = request.POST.get('mobile')
+        email = request.POST.get('email')
+
+        if not full_name.isalpha():
+            messages.error(request, "Full name must only contain letters.")
+            return redirect('ecomapp:customerprofile')
+
+        if not re.match(r'^[0-9]{10}$', mobile):
+            messages.error(request, "Mobile number should be exactly 10 digits.")
+            return redirect('ecomapp:customerprofile')
+
+        try:
+            EmailValidator()(email)  # Validate email format
+        except Exception :
+            messages.error(request, "Invalid email format.")
+            return redirect('ecomapp:customerprofile')
+
+        # All validations passed
+        customer = request.user.customer
+        customer.full_name = full_name
+        customer.address = address  # Consider a more robust validation if needed
+        customer.mobile = mobile
+        customer.save()
+
+        user = request.user
+        user.email = email
+        user.save()
+        messages.success(request, "Your account details have been updated successfully.")
+
+        return redirect('ecomapp:customerprofile')
