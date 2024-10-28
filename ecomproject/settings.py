@@ -39,11 +39,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.humanize",
     "django.contrib.staticfiles",
+    
+    "rest_framework",
     "crispy_forms",
     "crispy_bootstrap5",
     'django_summernote',
+
     "ecomapp",
     "ecomappadmin",
+    "api",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -153,4 +157,9 @@ MESSAGE_TAGS = {
     messages.WARNING: "warning",
     messages.ERROR: "danger",
     messages.SUCCESS: "success",
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
 }

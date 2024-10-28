@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("ecomapp.urls")),
     path("", include("ecomappadmin.urls")),
+    path("api/", include("api.urls")),
     # path("accounts/", include("django.contrib.auth.urls")),
     path('summernote/', include('django_summernote.urls')),
     path("accounts/", include("django.contrib.auth.urls")),
