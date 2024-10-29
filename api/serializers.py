@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 
-from ecomapp.models import Category, Product
+from ecomapp.models import Category, Product, Review
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -23,4 +23,9 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
+        fields = "__all__"
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
         fields = "__all__"

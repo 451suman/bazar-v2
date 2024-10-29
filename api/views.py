@@ -1,10 +1,13 @@
+from msilib.schema import ListView
 from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
 
-from api.serializers import GroupSerializer, ProductSerializer, UserSerializer
+from api.serializers import GroupSerializer, ProductSerializer, ReviewSerializer, UserSerializer
+from rest_framework.generics import ListAPIView
+from rest_framework.views import APIView
 
 from api.serializers import CategorySerializer
-from ecomapp.models import Category, Product
+from ecomapp.models import Category, Product, Review
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -45,3 +48,36 @@ class ProductsViewSet(viewsets.ModelViewSet):
         if self.action in ["list", "retrieve"]:
             return [permissions.AllowAny()]
         return super().get_permissions()
+
+class ProductListByCategoryViewSet(ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(
+            category =self.kwargs['category_id']
+        )
+
+        return queryset
+
+# category id comes from urls ['category_id']
+   
+
+class ReviewViewSet(APIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.AllowAny]  # Fixed typo from permissions_class
+
+    def get_queryset(self):
+        # Filter reviews by product ID (pk)
+        queryset = super().get_queryset()
+        queryset = queryset.filter(product_id=self.kwargs['pk'])  # Correctly use product_id
+        return queryset
+
+# class ReviewViewSet(APIView):
+#     permission_classes = [permissions.AllowAny]
+
+#     def get(self, request,pk, *args, **kwargs):
+#         review = Review.objects.filter(product_id=self.kwargs['pk'])

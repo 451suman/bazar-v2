@@ -14,5 +14,8 @@ router.register(r'products', views.ProductsViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    path("products-by-category-api/<int:category_id>/", views.ProductListByCategoryViewSet.as_view(), name='products-by-category-api'),    
+    path("get-reviews/<int:pk>/", views.ReviewViewSet.as_view(), name='get-reviews'),
 ]
