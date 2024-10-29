@@ -1,6 +1,6 @@
 Here's a clean and concise `README.md` for your GitHub project:
 
-```markdown
+````markdown
 # Project Name
 
 This is and ecommerce project.
@@ -16,7 +16,9 @@ Follow these steps to set up and run the project on your local machine.
    ```bash
    git clone https://github.com/451suman/bazar-v2.git
    ```
-   Or you can download zip files.
+````
+
+Or you can download zip files.
 
 2. **Create a virtual environment**
 
@@ -54,4 +56,12 @@ Follow these steps to set up and run the project on your local machine.
 
    ```bash
    python manage.py runserver
+   ```
+
+6. **To Login Admin login page**
+
+   login admin to perform task of Orders
+
+   ```bash
+   http://127.0.0.1:8000/admin-login/
    ```

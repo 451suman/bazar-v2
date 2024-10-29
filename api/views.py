@@ -1,7 +1,10 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
 
-from tutorial.quickstart.serializers import GroupSerializer, UserSerializer
+from api.serializers import GroupSerializer, ProductSerializer, UserSerializer
+
+from api.serializers import CategorySerializer
+from ecomapp.models import Category, Product
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -20,3 +23,25 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all().order_by('name')
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all().order_by('-id')
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action in ["list", "retrieve"]:
+            return [permissions.AllowAny()]
+        return super().get_permissions()
+    
+
+class ProductsViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all().order_by('-id')
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action in ["list", "retrieve"]:
+            return [permissions.AllowAny()]
+        return super().get_permissions()
