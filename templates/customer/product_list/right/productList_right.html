@@ -7,36 +7,40 @@
                 <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom mb-30">
                     <div class="ht-product-inner">
                         <div class="ht-product-image-wrap">
-                            <a href="{% url 'ecomapp:productdetail' product.slug %}" class="ht-product-image"> 
-                                <img src="{{product.image.url}}" alt="Universal Product Style" class="productlist-image-size"> 
+                            <a href="{% url 'ecomapp:productdetail' product.slug %}" class="ht-product-image">
+                                <img src="{{product.image.url}}" alt="Universal Product Style"
+                                    class="productlist-image-size">
                             </a>
                         </div>
                         <div class="ht-product-content">
                             <div class="ht-product-content-inner">
-                                <h6 class="ht-product-title"><a href="{% url 'ecomapp:productdetail' product.slug %}">{{product.title|truncatechars:50}}</a></h6>
+                                <h6 class="ht-product-title"><a
+                                        href="{% url 'ecomapp:productdetail' product.slug %}">{{product.title|truncatechars:50}}</a>
+                                </h6>
                                 <p class="text-danger">Category: {{ product.category.title }}</p>
-                                
+
                                 <div class="ht-product-price">
                                     <span class="new">Rs. {{ product.selling_price }}</span>
                                     <span class="old">Rs. {{ product.marked_price }}</span>
                                 </div>
                                 <div class="ht-product-ratting-wrap">
                                     <span class="ht-product-ratting">
-                                        {{ product.average_rating|default:"No ratings yet" }}
+                                        <!-- {{ product.average_rating|default:"No ratings yet" }} -->
+                                        {% if product.average_rating %}
+                                            {% for i in "12345" %}
+                                                {% if forloop.counter <= product.average_rating %} 
+                                                    ⭐ 
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                        No ratings yet
+                                        {% endif %}
 
-                                       
-
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
                                     </span>
                                 </div>
                             </div>
                             <br>
                             <a href="{% url 'ecomapp:addtocart' product.id %}" class="btn btn-primary">Add to Cart </a>
-
                         </div>
                     </div>
                 </div>

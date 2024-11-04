@@ -1,6 +1,7 @@
 from msilib.schema import ListView
+from urllib import response
 from django.contrib.auth.models import Group, User
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, status
 
 from api.serializers import GroupSerializer, ProductSerializer, ReviewSerializer, UserSerializer
 from rest_framework.generics import ListAPIView
@@ -65,19 +66,21 @@ class ProductListByCategoryViewSet(ListAPIView):
 # category id comes from urls ['category_id']
    
 
+# class ReviewViewSet(ListAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+#     permission_classes = [permissions.AllowAny]  # Fixed typo from permissions_class
+
+#     def get_queryset(self):
+#         # Filter reviews by product ID (pk)
+#         queryset = super().get_queryset()
+#         queryset = queryset.filter(product_id=self.kwargs['pk'])  # Correctly use product_id
+#         return queryset
+
 class ReviewViewSet(APIView):
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-    permission_classes = [permissions.AllowAny]  # Fixed typo from permissions_class
+    permission_classes = [permissions.AllowAny]
 
-    def get_queryset(self):
-        # Filter reviews by product ID (pk)
-        queryset = super().get_queryset()
-        queryset = queryset.filter(product_id=self.kwargs['pk'])  # Correctly use product_id
-        return queryset
-
-# class ReviewViewSet(APIView):
-#     permission_classes = [permissions.AllowAny]
-
-#     def get(self, request,pk, *args, **kwargs):
-#         review = Review.objects.filter(product_id=self.kwargs['pk'])
+    def get(self, request, pk, *args, **kwargs):
+        reviews = Review.objects.filter(product_id=self.kwargs['pk'])
+        serialized_data = ReviewSerializer(reviews, many=True).data
+        return response(serialized_data, status= status.HTTP_200_OK)

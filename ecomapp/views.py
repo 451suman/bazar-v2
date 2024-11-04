@@ -455,6 +455,7 @@ class CustomerOrderDetailView(customerRequiredMixin, DetailView):
 
 from django.core.validators import EmailValidator
 import re
+
 class CustomerDetailChange(customerRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         full_name = request.POST.get('full_name')
@@ -462,8 +463,9 @@ class CustomerDetailChange(customerRequiredMixin, View):
         mobile = request.POST.get('mobile')
         email = request.POST.get('email')
 
-        if not full_name.isalpha():
-            messages.error(request, "Full name must only contain letters.")
+        # if not full_name.isalpha():
+        if not re.match(r'^[A-Za-z]+(?: [A-Za-z]+)?$', full_name):
+            messages.error(request, "Full name must only contain letters and 1 space between first name  and last name.")
             return redirect('ecomapp:customerprofile')
 
         if not re.match(r'^[0-9]{10}$', mobile):
