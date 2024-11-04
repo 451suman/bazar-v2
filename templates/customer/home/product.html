@@ -33,13 +33,13 @@
                                                                 <span class="new">Rs. {{ product.selling_price }}</span>
                                                                 <span class="old">Rs. {{ product.marked_price }}</span>
                                                             </div>
-                                                            <div class="ht-product-ratting-wrap">
+                                                            <!-- <div class="ht-product-ratting-wrap">
                                                                 <span class="ht-product-ratting">
                                                                     {% for star in "★★★★★" %}
                                                                         <i class="sli sli-star"></i>
                                                                     {% endfor %}
                                                                 </span>
-                                                            </div>
+                                                            </div> -->
                                                             <br>
                                                             <a href="{% url 'ecomapp:addtocart' product.id %}" class="btn btn-primary">Add to Cart </a>
                                                         </div>
