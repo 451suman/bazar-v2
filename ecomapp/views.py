@@ -2,7 +2,7 @@ from urllib import request
 from django.shortcuts import redirect, render
 from django.views.generic import *
 from django.contrib.auth import authenticate, login, logout
-from ecomapp.forms import CheckoutForm, CustomerLoginForm, CustomerRegistrationsForm
+from ecomapp.forms import CheckoutForm, ContactForm, CustomerLoginForm, CustomerRegistrationsForm
 from ecomapp.models import *
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -491,3 +491,29 @@ class CustomerDetailChange(customerRequiredMixin, View):
         messages.success(request, "Your account details have been updated successfully.")
 
         return redirect('ecomapp:customerprofile')
+
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.http import HttpResponse
+from django.views import View
+from .models import Contact
+from .forms import ContactForm
+
+class ContactView(View):
+    def get(self, request, *args, **kwargs):
+        # Handle GET request: render the empty contact form
+        form = ContactForm()
+        return render(request, 'customer/contact/contact.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact = form.save(commit=False)
+            contact.customer = request.user.customer 
+            contact.save()
+            messages.success(request, "Your message has been submitted. We will contact you shortly.")
+            return redirect('ecomapp:contact') 
+        return render(request, 'customer/contact/contact.html', {'form': form})

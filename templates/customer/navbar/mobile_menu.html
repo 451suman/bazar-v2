@@ -36,7 +36,7 @@
                                 <li><a href="{% url 'ecomapp:category' %}" class="text-warning">All category </a></li>
                             </ul>
                         </li>
-
+                        <li class="menu-item-has-children"><a href="{% url 'ecomapp:contact' %}"> Contact </a></li>
                         {% if request.user.customer %}
                         <li class="menu-item-has-children">
                             <a href="{% url 'ecomapp:customerprofile' %}">

@@ -56,3 +56,6 @@ class AdminAdmin(admin.ModelAdmin):
     search_fields = ("full_name", "mobile")  
 
 admin.site.register(Admin, AdminAdmin)
+
+
+admin.site.register(Contact)

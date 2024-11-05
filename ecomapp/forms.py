@@ -1,5 +1,5 @@
 from django import forms
-from .models import Customer, Order
+from .models import Contact, Customer, Order
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -60,3 +60,10 @@ class CustomerLoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput())
 
 
+from django import forms
+from .models import Contact
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['subject', 'message']  # Only include subject and message in the form

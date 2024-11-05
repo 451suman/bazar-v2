@@ -65,3 +65,12 @@ Or you can download zip files.
    ```bash
    http://127.0.0.1:8000/admin-login/
    ```
+
+7. **To Login Admin Dashboard Panel**
+
+   login admin panel
+
+   ```bash
+   http://127.0.0.1:8000/admin/
+   ```
+
