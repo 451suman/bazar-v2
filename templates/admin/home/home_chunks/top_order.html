@@ -86,6 +86,23 @@
 </div>
 <div class="col">
     <div class="card radius-10 overflow-hidden">
+        <div class="card-body bg-warning text-body">
+            <a href="{% url 'ecomappadmin:admin-contact-unread' %}" class="text-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="mb-0">Total Contacts Unread</p>
+                        <h5 class="mb-0">{{contacts_count_unread|intcomma}}</h5>
+                    </div>
+                    <div class="ms-auto"> <i class='bx bx-cart font-30'></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="" id="chart1"></div>
+    </div>
+</div>
+<div class="col">
+    <div class="card radius-10 overflow-hidden">
         <div class="card-body text-body">
             <div class="d-flex align-items-center">
                 <div>
@@ -112,20 +129,5 @@
             </div>
         </div>
         <div class="" id="chart3"></div>
-    </div>
-</div>
-<div class="col">
-    <div class="card radius-10 overflow-hidden">
-        <div class="card-body text-body">
-            <div class="d-flex align-items-center">
-                <div>
-                    <p class="mb-0">Comments</p>
-                    <h5 class="mb-0">869</h5>
-                </div>
-                <div class="ms-auto"> <i class='bx bx-chat font-30'></i>
-                </div>
-            </div>
-        </div>
-        <div class="" id="chart4"></div>
     </div>
 </div>

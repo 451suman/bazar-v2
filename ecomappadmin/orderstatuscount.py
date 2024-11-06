@@ -1,4 +1,4 @@
-from ecomapp.models import Customer, Order
+from ecomapp.models import Contact, Customer, Order
 from django.db.models import Sum
 def orderstatuscountFunc(request):
     Received = Order.objects.filter(order_status="Order Received").count()
@@ -8,6 +8,12 @@ def orderstatuscountFunc(request):
     Canceled = Order.objects.filter(order_status="Order Canceled").count()
     CustomerCount =Customer.objects.count()
     totalincome = Order.objects.aggregate(total=Sum('total'))['total'] or 0    
+
+
+    contacts_count_read = Contact.objects.filter(read = True).count()
+    contacts_count_unread= Contact.objects.filter(read = False).count()
+
+
     return {
         "Received": Received,
         "Processing": Processing,
@@ -16,5 +22,7 @@ def orderstatuscountFunc(request):
         "Canceled": Canceled,
         "CustomerCount": CustomerCount,
         "totalincome":totalincome,
+        "contacts_count_read":contacts_count_read,
+        "contacts_count_unread":contacts_count_unread,
     }
 

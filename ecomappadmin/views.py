@@ -5,7 +5,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from ecomapp.models import ORDER_STATUS, Admin, Category, Contact, Customer, Order, Product
+from ecomapp.models import ORDER_STATUS, Admin, Category, Contact, Customer, Order, Product, Review
 from ecomappadmin.forms import AddProductForm, AdminLoginForm, CategoryForm
 from django.db.models import Sum
 
@@ -32,6 +32,7 @@ class AdminHomeView(AdminRequiredMixin, TemplateView):
         context["totalProducts"] = Product.objects.all().count()
         context["totalCategory"] = Category.objects.all().count()
         context["totalorder"] = Order.objects.all().count()
+        context["products"] =  Product.objects.all().order_by("-id")[:5]
         return context
 
 
@@ -211,6 +212,10 @@ class ProductDetailView(AdminRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Product"
+        product = context["product"]
+        context["reviewcount"] = Review.objects.filter(product=product).count()
+        context["all_review"] = Review.objects.filter(product=product).order_by("-id")
+        
         return context
 
 
@@ -237,9 +242,8 @@ class ProductEditView(AdminRequiredMixin, UpdateView):
 
 class ProductDeleteView(AdminRequiredMixin, DeleteView):
     model = Product
-    success_url = reverse_lazy(
-        "ecomappadmin:product-list"
-    )  # Ensure this is the correct URL name
+    success_url = reverse_lazy("ecomappadmin:product-list") 
+
 
 
 class ADDCategoryView(AdminRequiredMixin, CreateView):
@@ -306,8 +310,7 @@ class ShowUnreadContacts(AdminRequiredMixin, TemplateView):
         context = super().get_context_data()
 
         context["contacts"] = Contact.objects.filter(read = False)
-        context["contacts_count"] = Contact.objects.filter(read = False).count()
-
+        context["title"] = "Unread Contacts"
         return context
     
 class ShowreadContacts(AdminRequiredMixin, TemplateView):
@@ -318,7 +321,7 @@ class ShowreadContacts(AdminRequiredMixin, TemplateView):
         context = super().get_context_data()
 
         context["contacts"] = Contact.objects.filter(read = True)
-        context["contacts_count"] = Contact.objects.filter(read = True).count()
+        context["title"] = "Read Contacts"
 
         return context
 

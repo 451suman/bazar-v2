@@ -35,11 +35,22 @@
             </p>
         </div>
         <div class="tab-pane fade" id="warranty" role="tabpanel">
-            <p>{{product.warranty}}</p>
-            <p>{{product.return_policy}}</p>
+            <p>Warranty: {{product.warranty}}</p>
+            <p>Return Policy: {{product.return_policy}}</p>
         </div>
         <div class="tab-pane fade" id="reviews" role="tabpanel">
-            <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+            {% for review in all_review %}
+            <p>
+                <span class="text-primary fs-4">name: {{review.customer.full_name}}</span>
+                <br>
+                Rating :{{review.rating}}
+                <br>
+                subject: {{review.subject}}
+                <br>
+                <span class="text-secondary">{{review.review_text}}</span>
+            </p>
+            <hr>
+            {% endfor %}
         </div>
     </div>
 </div>

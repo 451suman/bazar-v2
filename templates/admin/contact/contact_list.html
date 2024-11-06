@@ -1,6 +1,6 @@
 {% extends "admin/adminbase.html" %}
 
-{% block title %}Contact List{% endblock %}
+{% block title %}{{title}} List{% endblock %}
 {% block content %}
 <!--start page wrapper -->
 
@@ -19,6 +19,7 @@
                 <thead class="table-light">
                     <tr>
                         <th>Sn</th>
+                        <th>Date</th>
                         <th>Customer Name</th>
                         <th>Subject</th>
                         <th>Message</th>
@@ -36,6 +37,7 @@
                                 </div>
                             </div>
                         </td>
+                        <td>{{contact.created}}</td>
 
                         <td>{{ contact.customer.full_name }}</td>
                         <td>

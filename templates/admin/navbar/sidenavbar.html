@@ -79,8 +79,8 @@
                 <div class="menu-title">Contact</div>
             </a>
             <ul>
-                <li><a class="text-body" href="{% url 'ecomappadmin:admin-contact-unread' %}"><i class="bx bx-right-arrow-alt"></i>Not Read</a></li>
-                <li><a class="text-body" href="{% url 'ecomappadmin:admin-contact-read' %}"><i class="bx bx-right-arrow-alt"></i>Read</a></li>
+                <li><a class="text-body bg-warning" href="{% url 'ecomappadmin:admin-contact-unread' %}"><i class="bx bx-right-arrow-alt"></i>Not Read ({{contacts_count_unread}})</a></li>
+                <li><a class="text-body bg-success" href="{% url 'ecomappadmin:admin-contact-read' %}"><i class="bx bx-right-arrow-alt"></i>Read ({{contacts_count_read}})</a></li>
             </ul>
         </li>
         

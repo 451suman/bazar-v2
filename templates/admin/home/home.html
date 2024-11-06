@@ -149,76 +149,21 @@
 			</div>
 
 			<div class="product-list p-3 mb-3">
-
+				{% for product in products %}
 				<div class="d-flex align-items-center py-3 border-bottom cursor-pointer">
 					<div class="product-img me-2">
-						<img src="assets/images/products/01.png" alt="product img">
+						<img src="{{product.image.url}}" alt="product img">
 					</div>
 					<div class="">
-						<h6 class="mb-0 font-14">Black Boost Chair</h6>
-						<p class="mb-0">148 Sales</p>
+						<h6 class="mb-0 font-14"><a href="{% url 'ecomappadmin:admin-product-detail' product.slug %}">{{product.title}}</a></h6>
+						<!-- <p class="mb-0">148 Sales</p> -->
 					</div>
 					<div class="ms-auto">
-						<h6 class="mb-0">$246.24</h6>
+						<h6 class="mb-0">Rs. <strike> {{product.marked_price}}</strike></h6>
+						<h6 class="mb-0">Rs.{{product.selling_price}}</h6>
 					</div>
 				</div>
-
-				<div class="d-flex align-items-center py-3 border-bottom cursor-pointer">
-					<div class="product-img me-2">
-						<img src="assets/images/products/03.png" alt="product img">
-					</div>
-					<div class="">
-						<h6 class="mb-0 font-14">Red Single Sofa</h6>
-						<p class="mb-0">122 Sales</p>
-					</div>
-					<div class="ms-auto">
-						<h6 class="mb-0">$328.14</h6>
-					</div>
-				</div>
-
-				<div class="d-flex align-items-center py-3 border-bottom cursor-pointer">
-					<div class="product-img me-2">
-						<img src="assets/images/products/04.png" alt="product img">
-					</div>
-					<div class="">
-						<h6 class="mb-0 font-14">Pink Rounded Sofa</h6>
-						<p class="mb-0">105 Sales</p>
-					</div>
-					<div class="ms-auto">
-						<h6 class="mb-0">$124.35</h6>
-					</div>
-				</div>
-
-				<div class="d-flex align-items-center py-3 border-bottom cursor-pointer">
-					<div class="product-img me-2">
-						<img src="assets/images/products/05.png" alt="product img">
-					</div>
-					<div class="">
-						<h6 class="mb-0 font-14">Brown Single Table</h6>
-						<p class="mb-0">201 Sales</p>
-					</div>
-					<div class="ms-auto">
-						<h6 class="mb-0">$158.34</h6>
-					</div>
-				</div>
-
-				<div class="d-flex align-items-center py-3 border-bottom cursor-pointer">
-					<div class="product-img me-2">
-						<img src="assets/images/products/06.png" alt="product img">
-					</div>
-					<div class="">
-						<h6 class="mb-0 font-14">Grey Long Chair</h6>
-						<p class="mb-0">146 Sales</p>
-					</div>
-					<div class="ms-auto">
-						<h6 class="mb-0">158.24</h6>
-					</div>
-				</div>
-
-
-
-
-
+				{% endfor %}
 			</div>
 		</div>
 	</div>

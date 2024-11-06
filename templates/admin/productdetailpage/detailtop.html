@@ -23,13 +23,14 @@
                     <i class='bx bxs-star text-warning'></i>
                     <i class='bx bxs-star text-secondary'></i>
                 </div>
-                <div>142 reviews</div>
-                <div class="text-success"><i class='bx bxs-cart-alt align-middle'></i> 134 orders</div>
+                <br>
+                <div> {{reviewcount}} reviews</div>
+                <!-- <div class="text-success"><i class='bx bxs-cart-alt align-middle'></i> 134 orders</div> -->
             </div>
 
             <dl class="row">
-                <dt class="col-sm-3">Category:</dt>
-                <dd class="col-sm-9">{{product.category.title}}</dd>
+                <dt class="col-sm-3">Category: {{product.category.title}}</dt>
+                
             </dl>
             <div class="mb-3">
                 <span class="me-2 text-decoration-line-through text-danger h4">Rs. {{product.marked_price}}</span>
