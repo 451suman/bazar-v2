@@ -5,7 +5,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from ecomapp.models import ORDER_STATUS, Admin, Category, Customer, Order, Product
+from ecomapp.models import ORDER_STATUS, Admin, Category, Contact, Customer, Order, Product
 from ecomappadmin.forms import AddProductForm, AdminLoginForm, CategoryForm
 from django.db.models import Sum
 
@@ -296,3 +296,43 @@ class CategoryDeleteView(AdminRequiredMixin, View):
         category.delete()
         messages.success(request, "Category deleted successfully")
         return redirect("ecomappadmin:admin-category-list")
+    
+
+class ShowUnreadContacts(AdminRequiredMixin, TemplateView):
+    model = Contact
+    template_name = "admin/contact/contact_list.html"
+    
+    def get_context_data(self):
+        context = super().get_context_data()
+
+        context["contacts"] = Contact.objects.filter(read = False)
+        context["contacts_count"] = Contact.objects.filter(read = False).count()
+
+        return context
+    
+class ShowreadContacts(AdminRequiredMixin, TemplateView):
+    model = Contact
+    template_name = "admin/contact/contact_list.html"
+    
+    def get_context_data(self):
+        context = super().get_context_data()
+
+        context["contacts"] = Contact.objects.filter(read = True)
+        context["contacts_count"] = Contact.objects.filter(read = True).count()
+
+        return context
+
+class ContactDetailView(AdminRequiredMixin, DetailView):
+    model = Contact
+    template_name = "admin/contact/contact_detail.html"
+    context_object_name = "contact"
+
+class ContactMarkAsRead(AdminRequiredMixin, View):
+    template_name = "admin/contact/contact_detail.html"
+
+    def get(self, request, pk):
+        contact = Contact.objects.get(pk=pk, read = False)
+        contact.read = True
+        contact.save()
+        messages.success(request, "This message is marked as Read.")
+        return redirect("ecomappadmin:admin-contact-detail", pk)

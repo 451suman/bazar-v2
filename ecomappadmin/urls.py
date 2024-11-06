@@ -27,7 +27,11 @@ urlpatterns = [
     path("admin-category-list/", CategoryListView.as_view(), name="admin-category-list"),
     path("admin-update-category/<int:pk>/", CategoryUpdateView.as_view(), name="admin-update-category"),
     path('admin-delete-category/<int:pk>/', CategoryDeleteView.as_view(), name='admin-delete-category'),
-    # other patterns...
+    
+    path("admin-contact-unread/", ShowUnreadContacts.as_view(), name="admin-contact-unread"),
+    path("admin-contact-read/", ShowreadContacts.as_view(), name="admin-contact-read"),
+    path("admin-contact-detail-<int:pk>/", ContactDetailView.as_view(), name="admin-contact-detail"),
+    path("admin-mark-as-read-<int:pk>/", ContactMarkAsRead.as_view(), name="admin-mark-as-read"),
 
 ]
 

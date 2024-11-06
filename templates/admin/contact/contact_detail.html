@@ -1,0 +1,33 @@
+{% extends "admin/adminbase.html" %}
+
+{% block title %}Contact List{% endblock %}
+{% block content %}
+<!--start page wrapper -->
+
+
+<div class="card">
+    <div class="card-body">
+        <span class = "fs-4">Date: {{contact.created}}</span >
+        <br>
+        Name: {{contact.customer.full_name}}
+        <br>
+        Phone: {{contact.customer.mobile}}
+        <br>
+        Email : {{contact.customer.user.email}}
+        <br>
+        subject:<span class="{% if contact.read %} text-success {% else %} text-danger {% endif %}">{{contact.subject}}</span>
+        <br>
+        read:  <span class="{% if contact.read %} text-success {% else %} text-danger {% endif %}">{{contact.read}}</span>
+        <br>
+        message:<span class="{% if contact.read %} text-success {% else %} text-danger {% endif %}">{{contact.message|linebreaks}}</span>
+        <br>
+        {% if contact.read is False %}
+        <a href="{% url 'ecomappadmin:admin-mark-as-read' contact.pk %}" class="btn btn-primary"> Mark as read</a>
+        {% endif %}
+
+        
+    </div>
+</div>
+
+<!--end page wrapper -->
+{% endblock content %}

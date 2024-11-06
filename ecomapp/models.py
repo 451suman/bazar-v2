@@ -100,6 +100,8 @@ class Contact(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     subject = models.CharField(max_length=100)
     message = models.TextField(max_length=500)
+    read = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Contact by {self.customer.full_name}"
