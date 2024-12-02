@@ -13,6 +13,7 @@ urlpatterns = [
     path("product/<slug:slug>/", ProductDetailView.as_view(), name="productdetail"),
     path("submit-review/<slug:slug>/", ReviewSubmit.as_view(), name="reviewsubmit"),
 
+    # product select buy category id
     path("category-list/<int:cid>/", CategoriesListView.as_view(), name="category-list"),
     path("category/", CategoryListView.as_view(), name="category"),
 

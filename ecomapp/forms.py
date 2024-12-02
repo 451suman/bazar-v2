@@ -28,18 +28,18 @@ class CustomerRegistrationsForm(forms.ModelForm):
 
         return uemail
     
-def clean_mobile(self):
-    mob = self.cleaned_data.get("mobile")
-    
-    # Check if the mobile number is numeric
-    if not mob.isdigit():
-        raise forms.ValidationError("Mobile number must contain only digits.")
-    
-    # Check if the mobile number is already registered
-    if User.objects.filter(mobile=mob).exists():
-        raise forms.ValidationError("Mobile Number already registered in the system.")
-    
-    return mob
+    def clean_mobile(self):
+        mob = self.cleaned_data.get("mobile")
+        
+        # Check if the mobile number is numeric
+        if not mob.isdigit():
+            raise forms.ValidationError("Mobile number must contain only digits.")
+        
+        # Check if the mobile number is already registered
+        if User.objects.filter(mobile=mob).exists():
+            raise forms.ValidationError("Mobile Number already registered in the system.")
+        
+        return mob
 
 
 

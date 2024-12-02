@@ -2,7 +2,12 @@ from urllib import request
 from django.shortcuts import redirect, render
 from django.views.generic import *
 from django.contrib.auth import authenticate, login, logout
-from ecomapp.forms import CheckoutForm, ContactForm, CustomerLoginForm, CustomerRegistrationsForm
+from ecomapp.forms import (
+    CheckoutForm,
+    ContactForm,
+    CustomerLoginForm,
+    CustomerRegistrationsForm,
+)
 from ecomapp.models import *
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -10,6 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
+
 # Create your views here.
 
 
@@ -80,10 +86,14 @@ class EcomMixin(object):
                 cart_obj.customer = request.user.customer
                 cart_obj.save()
         return super().dispatch(request, *args, **kwargs)
-    
+
+
 class customerRequiredMixin(object):
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and Customer.objects.filter(user=request.user).exists():
+        if (
+            request.user.is_authenticated
+            and Customer.objects.filter(user=request.user).exists()
+        ):
             pass
         else:
             return redirect("ecomapp:customerlogin")
@@ -106,8 +116,6 @@ class HomeView(EcomMixin, ListView):
         return context
 
 
-
-
 # class ProductListView(EcomMixin, ListView):
 #     model = Product
 #     template_name = "customer/product_list/product_list.html"
@@ -117,7 +125,8 @@ class HomeView(EcomMixin, ListView):
 #     def get_queryset(self):
 #         query = super().get_queryset()
 #         query = Product.objects.all().order_by("-id")
-        # return query
+# return query
+
 
 class ProductListView(EcomMixin, ListView):
     model = Product
@@ -128,16 +137,15 @@ class ProductListView(EcomMixin, ListView):
     def get_queryset(self):
         # Get the default queryset
         query = super().get_queryset()
-        
+
         # Add the average rating to each product
-        query = query.annotate(average_rating=Avg('review__rating')).order_by("-id")
-        
+        query = query.annotate(average_rating=Avg("review__rating")).order_by("-id")
+
         for product in query:
             if product.average_rating is not None:
-                product.average_rating = round(product.average_rating) 
-            
-        return query  # Return the updated queryset
+                product.average_rating = round(product.average_rating)
 
+        return query  # Return the updated queryset
 
 
 class CategoriesListView(EcomMixin, ListView):
@@ -149,21 +157,20 @@ class CategoriesListView(EcomMixin, ListView):
     def get_queryset(self):
         query = super().get_queryset()
         query = query.filter(
-            category__id=self.kwargs["cid"],
+            category=self.kwargs["cid"],
         ).order_by("-id")
         return query
-    
+
+
 class CategoryListView(EcomMixin, ListView):
     model = Category
     template_name = "customer/categoryNameList/categoryList.html"
-    context_object_name="categorylist"
+    context_object_name = "categorylist"
 
     def get_context_data(self):
         context = super().get_context_data()
         context["title"] = "Category"
         return context
-
-
 
 
 class SearchView(EcomMixin, TemplateView):
@@ -173,10 +180,12 @@ class SearchView(EcomMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         kw = self.request.GET.get("keyword")
         results = Product.objects.filter(
-            Q(title__icontains=kw) | Q(description__icontains=kw) )
+            Q(title__icontains=kw) | Q(description__icontains=kw)
+        )
         print(results)
         context["products"] = results
         return context
+
 
 # class idProductDetailView(EcomMixin, DetailView):
 #     model = Product
@@ -195,7 +204,6 @@ class SearchView(EcomMixin, TemplateView):
 #         return context
 
 
-
 class ProductDetailView(EcomMixin, TemplateView):
     template_name = "customer/productDetailPage/product_detail_page.html"
 
@@ -210,8 +218,8 @@ class ProductDetailView(EcomMixin, TemplateView):
         reviews = Review.objects.filter(product=product)
         context["all_review"] = reviews
         # Calculate the average rating
-        average_rating_data = reviews.aggregate(Avg('rating'))['rating__avg']
-        
+        average_rating_data = reviews.aggregate(Avg("rating"))["rating__avg"]
+
         if average_rating_data is not None:
             average_rating = round(average_rating_data)
             if 1 <= average_rating <= 5:
@@ -220,17 +228,22 @@ class ProductDetailView(EcomMixin, TemplateView):
                 context["average_rating"] = 0
         else:
             context["average_rating"] = 0
-        
+
         can_review = False
         # Check if the user is authenticated and is a customer
-        if self.request.user.is_authenticated and Customer.objects.filter(user=self.request.user).exists():
+        if (
+            self.request.user.is_authenticated
+            and Customer.objects.filter(user=self.request.user).exists()
+        ):
             order_items = Order.objects.filter(
                 customer__user=self.request.user,
                 cart__cartproduct__product=product,
-                order_status="Order Completed"
+                order_status="Order Completed",
             )
 
-            has_reviewed = Review.objects.filter(customer__user=self.request.user, product=product).exists()
+            has_reviewed = Review.objects.filter(
+                customer__user=self.request.user, product=product
+            ).exists()
 
             if order_items.exists() and not has_reviewed:
                 can_review = True
@@ -238,7 +251,6 @@ class ProductDetailView(EcomMixin, TemplateView):
         context["can_review"] = can_review
 
         return context
-
 
         # print("-------------------------------------------------------------------")
         # print("-------------------------------------------------------------------")
@@ -250,6 +262,7 @@ class ProductDetailView(EcomMixin, TemplateView):
 
         return context
 
+
 class ReviewSubmit(View):
     def post(self, request, slug):
         rating = request.POST.get("rating")
@@ -257,20 +270,18 @@ class ReviewSubmit(View):
         product = get_object_or_404(Product, slug=slug)
 
         # Get or create the Customer instance based on the logged-in User
-        customer= Customer.objects.get(user=request.user)
+        customer = Customer.objects.get(user=request.user)
 
         # Create the review
         Review.objects.create(
             product=product,
             rating=rating,
             review_text=review_text,
-            customer=customer  # Assign the Customer instance
+            customer=customer,  # Assign the Customer instance
         )
 
         # Redirect to product detail page
-        return redirect('ecomapp:productdetail', slug=slug)
-
-        
+        return redirect("ecomapp:productdetail", slug=slug)
 
 
 class AddToCartView(EcomMixin, View):
@@ -414,9 +425,11 @@ class CheckoutView(customerRequiredMixin, CreateView):
             # Check if an order already exists for this cart
             existing_order = Order.objects.filter(cart=cart_obj).first()
             if existing_order:
-                messages.warning(self.request, "An order has already been placed for this cart.")
+                messages.warning(
+                    self.request, "An order has already been placed for this cart."
+                )
                 return redirect(self.success_url)
-            form.instance.customer = self.request.user.customer 
+            form.instance.customer = self.request.user.customer
             form.instance.cart = cart_obj
             form.instance.subtotal = cart_obj.total
             form.instance.discount = 0
@@ -433,8 +446,7 @@ class CheckoutView(customerRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-
-class CustomerProfileView(customerRequiredMixin,TemplateView):
+class CustomerProfileView(customerRequiredMixin, TemplateView):
     template_name = "customer/my_account/myaccount.html"
 
     def get_context_data(self, **kwargs):
@@ -453,30 +465,35 @@ class CustomerOrderDetailView(customerRequiredMixin, DetailView):
     template_name = "customer/orderdetailView/customerorderdetail.html"
     context_object_name = "ord_obj"
 
+
 from django.core.validators import EmailValidator
 import re
 
+
 class CustomerDetailChange(customerRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        full_name = request.POST.get('full_name')
-        address = request.POST.get('address')
-        mobile = request.POST.get('mobile')
-        email = request.POST.get('email')
+        full_name = request.POST.get("full_name")
+        address = request.POST.get("address")
+        mobile = request.POST.get("mobile")
+        email = request.POST.get("email")
 
         # if not full_name.isalpha():
-        if not re.match(r'^[A-Za-z]+(?: [A-Za-z]+)?$', full_name):
-            messages.error(request, "Full name must only contain letters and 1 space between first name  and last name.")
-            return redirect('ecomapp:customerprofile')
+        if not re.match(r"^[A-Za-z]+(?: [A-Za-z]+)?$", full_name):
+            messages.error(
+                request,
+                "Full name must only contain letters and 1 space between first name  and last name.",
+            )
+            return redirect("ecomapp:customerprofile")
 
-        if not re.match(r'^[0-9]{10}$', mobile):
+        if not re.match(r"^[0-9]{10}$", mobile):
             messages.error(request, "Mobile number should be exactly 10 digits.")
-            return redirect('ecomapp:customerprofile')
+            return redirect("ecomapp:customerprofile")
 
         try:
             EmailValidator()(email)  # Validate email format
-        except Exception :
+        except Exception:
             messages.error(request, "Invalid email format.")
-            return redirect('ecomapp:customerprofile')
+            return redirect("ecomapp:customerprofile")
 
         # All validations passed
         customer = request.user.customer
@@ -488,11 +505,11 @@ class CustomerDetailChange(customerRequiredMixin, View):
         user = request.user
         user.email = email
         user.save()
-        messages.success(request, "Your account details have been updated successfully.")
+        messages.success(
+            request, "Your account details have been updated successfully."
+        )
 
-        return redirect('ecomapp:customerprofile')
-
-
+        return redirect("ecomapp:customerprofile")
 
 
 from django.shortcuts import render, redirect
@@ -502,18 +519,21 @@ from django.views import View
 from .models import Contact
 from .forms import ContactForm
 
-class ContactView(View):
+
+class ContactView(customerRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         # Handle GET request: render the empty contact form
         form = ContactForm()
-        return render(request, 'customer/contact/contact.html', {'form': form})
+        return render(request, "customer/contact/contact.html", {"form": form})
 
     def post(self, request, *args, **kwargs):
         form = ContactForm(request.POST)
         if form.is_valid():
             contact = form.save(commit=False)
-            contact.customer = request.user.customer 
+            contact.customer = request.user.customer
             contact.save()
-            messages.success(request, "Your message has been submitted. We will contact you shortly.")
-            return redirect('ecomapp:contact') 
-        return render(request, 'customer/contact/contact.html', {'form': form})
+            messages.success(
+                request, "Your message has been submitted. We will contact you shortly."
+            )
+            return redirect("ecomapp:contact")
+        return render(request, "customer/contact/contact.html", {"form": form})
