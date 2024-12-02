@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets, status
 
 from api.serializers import (
+    CustomerSerializer,
     GroupSerializer,
     ProductSerializer,
     ReadReviewSerializer,
@@ -19,6 +20,7 @@ from ecomapp.models import Category, Customer, Product, Review
 from rest_framework.views import APIView
 from rest_framework.views import Response
 from rest_framework import status, permissions
+from .permissions import IsOwner  # Import the custom permission class
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -39,6 +41,80 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all().order_by("name")
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class CustomerViewSet(viewsets.ViewSet):
+    serializer_class = CustomerSerializer
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]  # Ensure the user is authenticated for all actions
+
+    def list(self, request):
+        queryset = Customer.objects.all().order_by("-id")
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, uid):
+        # Retrieving customer by user id
+        try:
+            queryset = Customer.objects.get(user=uid)
+            serializer = self.serializer_class(queryset)
+            return Response(serializer.data)
+        except Customer.DoesNotExist:
+            return Response({"detail": "Customer not found."}, status=404)
+
+    def update(self, request, uid):
+        """
+        Fully update a customer's information. Only the customer or admin can update.
+        """
+        try:
+            # Get the customer by 'user.id'
+            customer = Customer.objects.get(user__id=uid)
+            self.check_object_permissions(
+                request, customer
+            )  # Check if the user has permission to update this customer
+
+            # Update customer with the provided data
+            serializer = self.serializer_class(
+                customer, data=request.data, partial=False
+            )
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Customer.DoesNotExist:
+            return Response({"detail": "Customer not found."}, status=404)
+
+    def partial_update(self, request, uid):
+        """
+        Partially update a customer's information. Only the customer or admin can update.
+        """
+        try:
+            # Get the customer by 'user.id'
+            customer = Customer.objects.get(user__id=uid)
+            self.check_object_permissions(
+                request, customer
+            )  # Check if the user has permission to update this customer
+
+            # Partially update customer with the provided data
+            serializer = self.serializer_class(
+                customer, data=request.data, partial=True
+            )
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Customer.DoesNotExist:
+            return Response({"detail": "Customer not found."}, status=404)
+
+    def get_permissions(self):
+        if self.action in ["list", "retrieve"]:
+            # Only admins can view the customer list or individual records
+            return [permissions.IsAdminUser()]
+        if self.action in ["update", "partial_update"]:
+            # Only the customer (user) or admin can update customer data
+            return [permissions.IsAuthenticated(), IsOwner()]
+        return super().get_permissions()
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

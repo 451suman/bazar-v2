@@ -8,7 +8,7 @@ router.register(r"users", views.UserViewSet)
 router.register(r"groups", views.GroupViewSet)
 router.register(r"categories", views.CategoryViewSet)
 router.register(r"products", views.ProductsViewSet)
-# router.register(r"reviews", views.ReviewViewSet, basename="reviews")
+# router.register(r"customers", views.CustomerViewSet)
 
 
 # Wire up our API using automatic URL routing.
@@ -31,4 +31,9 @@ urlpatterns = [
         views.ReviewViewSet.as_view({"get": "post"}),
         name="products-reviews",
     ),
+    path("customers/", views.CustomerViewSet.as_view({"get": "list"})),
+ path('customers/<int:uid>/', views.CustomerViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update'})),  # Retrieve, update, and partial update]
+
+
+
 ]

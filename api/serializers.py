@@ -7,13 +7,21 @@ from ecomapp.models import Category, Customer, Product, Review
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "email", "groups", "first_name", "last_name"]
+        fields = ["id", "username"]
 
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ["id", "name"]
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = Customer
+        fields = "__all__"
 
 
 class CategorySerializer(serializers.ModelSerializer):
